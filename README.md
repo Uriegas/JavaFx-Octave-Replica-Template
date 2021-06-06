@@ -2,6 +2,8 @@
 ### Calculadora científica con interfáz gráfica
 ### Reporte
 [Overleaf](https://www.overleaf.com/read/jqchhwctbwmx)
+### Nota
+JavaFx no es adecuado para escribir editores de texto o IDE's por lo que la mayoria de la funcionalidad de Octave no se implementa.  
 
 ### Objetivo de la Práctica
 
