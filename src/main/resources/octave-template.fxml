@@ -44,7 +44,7 @@
             </MenuBar>
             <HBox prefHeight="0.0" prefWidth="600.0" spacing="4.0">
                <children>
-                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#fileClicked" prefHeight="22.0" prefWidth="33.0">
+                  <Button fx:id="fileBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#fileClicked" prefHeight="22.0" prefWidth="33.0">
                      <graphic>
                         <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -52,7 +52,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pasteClicked" prefHeight="22.0" prefWidth="33.0">
+                  <Button fx:id="pasteBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pasteClicked" prefHeight="22.0" prefWidth="33.0">
                      <graphic>
                         <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -60,7 +60,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#backClicked" prefHeight="22.0" prefWidth="33.0">
+                  <Button fx:id="backBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#backClicked" prefHeight="22.0" prefWidth="33.0">
                      <graphic>
                         <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -70,7 +70,7 @@
                      </graphic></Button>
                   <Separator orientation="VERTICAL" prefHeight="24.0" prefWidth="19.0" />
                   <Label prefHeight="24.0" prefWidth="126.0" text="Current Directory: " />
-                  <Button mnemonicParsing="false" onAction="#selectDirClicked" text="Current Directory" />
+                  <Button fx:id="currentDirBtn" mnemonicParsing="false" onAction="#selectDirClicked" text="Current Directory" />
                </children>
                <padding>
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
