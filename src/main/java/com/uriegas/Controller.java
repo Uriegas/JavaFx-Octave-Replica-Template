@@ -1,12 +1,13 @@
 package com.uriegas;
 
-import javafx.event.ActionEvent;
+import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.*;
 
 public class Controller {
     @FXML
-    private TextArea cmdString;
+    private TextArea cmdArea;
     @FXML
     private Button fileBtn;
     @FXML
@@ -30,4 +31,24 @@ public class Controller {
     protected void selectDirClicked(ActionEvent e){
         System.out.println("You pressed the selectDir button");
     }
+    @FXML
+    protected void inputStatement(){
+        cmdArea.setOnKeyPressed(event->{
+            if(event.getCode() == KeyCode.ENTER){
+                String text = cmdArea.getText();
+                System.out.println("You entered: " + text);
+            }
+        }
+        );
+    }
+//    cmdArea.setOnKeyPressed( new EventHandler<KeyEvent>(){
+//        public void handle(KeyEvent keyEvent) {
+//            if (keyEvent.getCode() == KeyCode.ENTER)  {
+//                String text = cmdArea.getText();
+//                System.out.println(text);
+//                cmdArea.setText("");
+//            }
+//        }
+//    });
+    
 }

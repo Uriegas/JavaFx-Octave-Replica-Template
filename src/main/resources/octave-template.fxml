@@ -80,7 +80,7 @@
       </VBox>
    </top>
    <center>
-      <TextArea fx:id="cmdString" prefHeight="318.0" prefWidth="340.0" text="Welcome to Uriegas Calculator.&#10;Enjoy&#10;&gt;&gt;" BorderPane.alignment="CENTER" />
+      <TextArea fx:id="cmdArea" onKeyPressed="#inputStatement" prefHeight="318.0" prefWidth="340.0" text="Welcome to Uriegas Calculator.&#10;Enjoy&#10;&gt;&gt;" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
       <HBox BorderPane.alignment="CENTER">
