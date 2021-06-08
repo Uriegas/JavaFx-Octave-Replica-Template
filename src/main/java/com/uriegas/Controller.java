@@ -14,6 +14,24 @@ public class Controller {
     private Button pasteBtn;
     @FXML
     private Button currentDirBtn;
+    @FXML
+    private TreeView<String> files;
+    private TreeItem<String> root, bucky, joseph;
+
+    /**
+     * Constructor to initialize treeviewer
+     */
+    public void initialize(){
+        root = new TreeItem<>("root");
+        root.setExpanded(true);
+        bucky = new TreeItem<>("Bucky");
+        root.getChildren().add(bucky);
+        joseph = new TreeItem<>("joseph");
+        root.getChildren().add(joseph);
+
+        files.setRoot(root);
+        files.setShowRoot(true);
+    }
 
     @FXML
     protected void fileClicked(ActionEvent e){
@@ -51,5 +69,9 @@ public class Controller {
             }
         }
         );
+    }
+    @FXML
+    protected void selectFile(){
+
     }
 }
