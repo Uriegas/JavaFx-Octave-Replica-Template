@@ -31,24 +31,25 @@ public class Controller {
     protected void selectDirClicked(ActionEvent e){
         System.out.println("You pressed the selectDir button");
     }
+    /**
+     * Gets the text entered by the user in the command line area
+     * Can be improved by the use of an emulator, as in the code in:
+     * https://github.com/javaterminal/TerminalFX
+     * Pending Functionality:
+     * "Add the !exit command as a close of the program"
+     */
     @FXML
     protected void inputStatement(){
         cmdArea.setOnKeyPressed(event->{
             if(event.getCode() == KeyCode.ENTER){
-                String text = cmdArea.getText();
-                System.out.println("You entered: " + text);
+                String[] text = cmdArea.getText().split("\n");
+                String input = text[text.length - 1];
+                input = input.substring(2, input.length());
+                System.out.println("You entered: " + input);
+                cmdArea.appendText("You entered: " + input + '\n');
+                cmdArea.appendText(">>");
             }
         }
         );
     }
-//    cmdArea.setOnKeyPressed( new EventHandler<KeyEvent>(){
-//        public void handle(KeyEvent keyEvent) {
-//            if (keyEvent.getCode() == KeyCode.ENTER)  {
-//                String text = cmdArea.getText();
-//                System.out.println(text);
-//                cmdArea.setText("");
-//            }
-//        }
-//    });
-    
 }
