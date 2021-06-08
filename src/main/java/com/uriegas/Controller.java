@@ -36,7 +36,6 @@ public class Controller {
         TreeItem<File> root = createFilesTree(new File("/"));
         files.setRoot(root);
         files.setShowRoot(false);
-        System.out.println(File.listRoots() );
     }
 
     @FXML
@@ -78,6 +77,11 @@ public class Controller {
     }
     @FXML
     protected void selectFile(){
+        files.getSelectionModel().selectedItemProperty()
+            .addListener((v, oldValue, newValue)->{
+                if(newValue != null)
+                    println(newValue.getValue().toString());
+            });
 
     }
 //    private TreeItem<File> createFilesTree(File root){
@@ -86,52 +90,65 @@ public class Controller {
 //            private boolean 
 //        }
 //    }
-
+    /**
+     * Creates the node for the Files Tree
+     * @param f the root File
+     * @return the TreeItem aka Node
+     */
     private TreeItem<File> createFilesTree(final File f) {
     return new TreeItem<File>(f) {
-      private boolean isLeaf;
-      private boolean isFirstTimeChildren = true;
-      private boolean isFirstTimeLeaf = true;
+        private boolean isLeaf;
+        private boolean isFirstTimeChildren = true;
+        private boolean isFirstTimeLeaf = true;
 
-      @Override
-      public ObservableList<TreeItem<File>> getChildren() {
-        if (isFirstTimeChildren) {
-          isFirstTimeChildren = false;
-          super.getChildren().setAll(buildChildren(this));
+        @Override
+        public ObservableList<TreeItem<File>> getChildren() {
+            if (isFirstTimeChildren) {
+            isFirstTimeChildren = false;
+            super.getChildren().setAll(buildChildren(this));
+            }
+            return super.getChildren();
         }
-        return super.getChildren();
-      }
 
-      @Override
-      public boolean isLeaf() {
-        if (isFirstTimeLeaf) {
-          isFirstTimeLeaf = false;
-          File f = (File) getValue();
-          isLeaf = f.isFile();
+        @Override
+        public boolean isLeaf() {
+            if (isFirstTimeLeaf) {
+            isFirstTimeLeaf = false;
+            File f = (File) getValue();
+            isLeaf = f.isFile();
+            }
+            return isLeaf;
         }
-        return isLeaf;
-      }
 
-      private ObservableList<TreeItem<File>> buildChildren(
-          TreeItem<File> TreeItem) {
-        File f = TreeItem.getValue();
-        if (f == null) {
-          return FXCollections.emptyObservableList();
+        private ObservableList<TreeItem<File>> buildChildren(
+            TreeItem<File> TreeItem) {
+            File f = TreeItem.getValue();
+            if (f == null) {
+            return FXCollections.emptyObservableList();
+            }
+            if (f.isFile()) {
+            return FXCollections.emptyObservableList();
+            }
+            File[] files = f.listFiles();
+            if (files != null) {
+            ObservableList<TreeItem<File>> children = FXCollections
+                .observableArrayList();
+            for (File childFile : files) {
+                children.add(createFilesTree(childFile));
+            }
+            return children;
+            }
+            return FXCollections.emptyObservableList();
         }
-        if (f.isFile()) {
-          return FXCollections.emptyObservableList();
-        }
-        File[] files = f.listFiles();
-        if (files != null) {
-          ObservableList<TreeItem<File>> children = FXCollections
-              .observableArrayList();
-          for (File childFile : files) {
-            children.add(createFilesTree(childFile));
-          }
-          return children;
-        }
-        return FXCollections.emptyObservableList();
-      }
-    };
-  }
+        };
+    }
+    /**
+     * Println for the Emulated Terminal
+     */
+    private void println(String str){
+        String text = cmdArea.getText();
+        if(text.charAt(text.length()-1) != '\n')
+            cmdArea.appendText("\n");
+        cmdArea.appendText(str + "\n>>");
+    }
 }
