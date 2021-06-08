@@ -1,9 +1,10 @@
 package com.uriegas;
-
+import java.io.*;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
+import javafx.collections.*;
 
 public class Controller {
     @FXML
@@ -15,22 +16,27 @@ public class Controller {
     @FXML
     private Button currentDirBtn;
     @FXML
-    private TreeView<String> files;
-    private TreeItem<String> root, bucky, joseph;
+    private TreeView<File> files;
+    //private TreeItem<String> root, bucky, joseph;
 
     /**
-     * Constructor to initialize treeviewer
+     * Initializer to create the treeviewer
+     * This method is special,
+     * It's like a pos-constructor:
+     * executed after constructing everything
      */
     public void initialize(){
-        root = new TreeItem<>("root");
-        root.setExpanded(true);
-        bucky = new TreeItem<>("Bucky");
-        root.getChildren().add(bucky);
-        joseph = new TreeItem<>("joseph");
-        root.getChildren().add(joseph);
+//        root = new TreeItem<>("root");
+//        root.setExpanded(true);
+//        bucky = new TreeItem<>("Bucky");
+//        root.getChildren().add(bucky);
+//        joseph = new TreeItem<>("joseph");
+//        root.getChildren().add(joseph);
 
+        TreeItem<File> root = createFilesTree(new File("/"));
         files.setRoot(root);
-        files.setShowRoot(true);
+        files.setShowRoot(false);
+        System.out.println(File.listRoots() );
     }
 
     @FXML
@@ -74,4 +80,58 @@ public class Controller {
     protected void selectFile(){
 
     }
+//    private TreeItem<File> createFilesTree(File root){
+//        return new TreeItem<File>(root){
+//            private boolean leaf;
+//            private boolean 
+//        }
+//    }
+
+    private TreeItem<File> createFilesTree(final File f) {
+    return new TreeItem<File>(f) {
+      private boolean isLeaf;
+      private boolean isFirstTimeChildren = true;
+      private boolean isFirstTimeLeaf = true;
+
+      @Override
+      public ObservableList<TreeItem<File>> getChildren() {
+        if (isFirstTimeChildren) {
+          isFirstTimeChildren = false;
+          super.getChildren().setAll(buildChildren(this));
+        }
+        return super.getChildren();
+      }
+
+      @Override
+      public boolean isLeaf() {
+        if (isFirstTimeLeaf) {
+          isFirstTimeLeaf = false;
+          File f = (File) getValue();
+          isLeaf = f.isFile();
+        }
+        return isLeaf;
+      }
+
+      private ObservableList<TreeItem<File>> buildChildren(
+          TreeItem<File> TreeItem) {
+        File f = TreeItem.getValue();
+        if (f == null) {
+          return FXCollections.emptyObservableList();
+        }
+        if (f.isFile()) {
+          return FXCollections.emptyObservableList();
+        }
+        File[] files = f.listFiles();
+        if (files != null) {
+          ObservableList<TreeItem<File>> children = FXCollections
+              .observableArrayList();
+          for (File childFile : files) {
+            children.add(createFilesTree(childFile));
+          }
+          return children;
+        }
+        return FXCollections.emptyObservableList();
+      }
+    };
+  }
 }
