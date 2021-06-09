@@ -26,16 +26,18 @@ public class Controller {
      * executed after constructing everything
      */
     public void initialize(){
-//        root = new TreeItem<>("root");
-//        root.setExpanded(true);
-//        bucky = new TreeItem<>("Bucky");
-//        root.getChildren().add(bucky);
-//        joseph = new TreeItem<>("joseph");
-//        root.getChildren().add(joseph);
-
         TreeItem<File> root = createFilesTree(new File("/"));
         files.setRoot(root);
         files.setShowRoot(false);
+        /**
+         * Adds a listener to the click file in the Treeview
+         * When a file is clicked then execute anonymous function
+         */
+        files.getSelectionModel().selectedItemProperty()
+            .addListener((v, oldValue, newValue)->{
+                if(newValue != null)
+                    printToTerminal(newValue.getValue().toString());
+            });
     }
 
     @FXML
@@ -77,19 +79,7 @@ public class Controller {
     }
     @FXML
     protected void selectFile(){
-        files.getSelectionModel().selectedItemProperty()
-            .addListener((v, oldValue, newValue)->{
-                if(newValue != null)
-                    println(newValue.getValue().toString());
-            });
-
     }
-//    private TreeItem<File> createFilesTree(File root){
-//        return new TreeItem<File>(root){
-//            private boolean leaf;
-//            private boolean 
-//        }
-//    }
     /**
      * Creates the node for the Files Tree
      * @param f the root File
@@ -145,7 +135,7 @@ public class Controller {
     /**
      * Println for the Emulated Terminal
      */
-    private void println(String str){
+    private void printToTerminal(String str){
         String text = cmdArea.getText();
         if(text.charAt(text.length()-1) != '\n')
             cmdArea.appendText("\n");
