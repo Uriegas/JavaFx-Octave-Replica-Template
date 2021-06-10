@@ -1,6 +1,7 @@
 package com.uriegas;
 import java.io.*;
-import java.util.function.*;
+import java.nio.file.Paths;
+
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -27,7 +28,8 @@ public class Controller {
      * executed after constructing everything
      */
     public void initialize(){
-        TreeItem<File> root = createFilesTree(new File("/"));
+        TreeItem<File> root = createFilesTree(new File(
+            Paths.get(System.getProperty("user.dir")).toString()));
         files.setRoot(root);
         files.setShowRoot(false);
         /**
@@ -87,6 +89,7 @@ public class Controller {
      * Creates the node for the Files Tree
      * @param f the root File
      * @return the TreeItem with all the Files
+     * Source: JavaFX docs
      */
     private TreeItem<File> createFilesTree(final File f) {
     return new TreeItem<File>(f) {
