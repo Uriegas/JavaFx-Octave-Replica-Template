@@ -101,7 +101,7 @@
    <left>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <TreeView fx:id="files" onMouseClicked="#selectFile" />
+            <TreeView fx:id="files" />
             <TableView>
               <columns>
                 <TableColumn prefWidth="71.0" text="Variable" />

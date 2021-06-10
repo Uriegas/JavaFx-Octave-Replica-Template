@@ -1,5 +1,6 @@
 package com.uriegas;
 import java.io.*;
+import java.util.function.*;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -17,7 +18,7 @@ public class Controller {
     private Button currentDirBtn;
     @FXML
     private TreeView<File> files;
-    //private TreeItem<String> root, bucky, joseph;
+    private String oldText;//Text prior user input
 
     /**
      * Initializer to create the treeviewer
@@ -33,11 +34,18 @@ public class Controller {
          * Adds a listener to the click file in the Treeview
          * When a file is clicked then execute anonymous function
          */
+        oldText = cmdArea.getText();
         files.getSelectionModel().selectedItemProperty()
             .addListener((v, oldValue, newValue)->{
                 if(newValue != null)
                     printToTerminal(newValue.getValue().toString());
             });
+        
+        cmdArea.setTextFormatter(new TextFormatter<>(change ->{
+            if(change.getCaretPosition() < oldText.length() || change.getAnchor() < oldText.length())
+                return null;
+            return change;
+        }));
     }
 
     @FXML
@@ -70,20 +78,15 @@ public class Controller {
                 String[] text = cmdArea.getText().split("\n");
                 String input = text[text.length - 1];
                 input = input.substring(2, input.length());
-                System.out.println("You entered: " + input);
-                cmdArea.appendText("You entered: " + input + '\n');
-                cmdArea.appendText(">>");
+                printToTerminal("You entered: " + input);
             }
         }
         );
     }
-    @FXML
-    protected void selectFile(){
-    }
     /**
      * Creates the node for the Files Tree
      * @param f the root File
-     * @return the TreeItem aka Node
+     * @return the TreeItem with all the Files
      */
     private TreeItem<File> createFilesTree(final File f) {
     return new TreeItem<File>(f) {
@@ -136,9 +139,8 @@ public class Controller {
      * Println for the Emulated Terminal
      */
     private void printToTerminal(String str){
-        String text = cmdArea.getText();
-        if(text.charAt(text.length()-1) != '\n')
-            cmdArea.appendText("\n");
-        cmdArea.appendText(str + "\n>>");
+        str = str + "\n>>";
+        cmdArea.appendText(str);
+        oldText = cmdArea.getText();
     }
 }
