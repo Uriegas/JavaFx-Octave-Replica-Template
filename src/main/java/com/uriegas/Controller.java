@@ -55,14 +55,12 @@ public class Controller {
             return change;
         }));
         listCommands = FXCollections.observableArrayList();
-        listCommands.add("x = 10");
-        listCommands.add("y = 20");
         commandHistory.setItems(listCommands);
         commandHistory.getSelectionModel().selectedItemProperty().addListener(
             new ChangeListener<String>(){
                 @Override
                 public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue){
-                    System.out.println("This value changed to: " + newValue);
+                    cmdArea.appendText(newValue);
                 }});
     }
 
@@ -96,7 +94,11 @@ public class Controller {
                 String[] text = cmdArea.getText().split("\n");
                 String input = text[text.length - 1];
                 input = input.substring(2, input.length());
-                printToTerminal("You entered: " + input);
+                //This if doesn't work, don't know why
+                //if(input != "" || input != null || input != "\n"){
+                    printToTerminal("You entered: " + input);
+                    listCommands.add(input);
+                //}
             }
         }
         );
