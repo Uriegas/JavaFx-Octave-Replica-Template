@@ -6,6 +6,8 @@ import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
 
 public class Controller {
@@ -19,7 +21,11 @@ public class Controller {
     private Button currentDirBtn;
     @FXML
     private TreeView<File> files;
+    @FXML
+    private ListView<String> commandHistory;
+    private ObservableList<String> listCommands;
     private String oldText;//Text prior user input
+
 
     /**
      * Initializer to create the treeviewer
@@ -48,6 +54,16 @@ public class Controller {
                 return null;
             return change;
         }));
+        listCommands = FXCollections.observableArrayList();
+        listCommands.add("x = 10");
+        listCommands.add("y = 20");
+        commandHistory.setItems(listCommands);
+        commandHistory.getSelectionModel().selectedItemProperty().addListener(
+            new ChangeListener<String>(){
+                @Override
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue){
+                    System.out.println("This value changed to: " + newValue);
+                }});
     }
 
     @FXML

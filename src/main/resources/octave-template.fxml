@@ -102,14 +102,14 @@
       <VBox BorderPane.alignment="CENTER">
          <children>
             <TreeView fx:id="files" />
-            <TableView>
+            <TableView fx:id="environment">
               <columns>
                 <TableColumn prefWidth="71.0" text="Variable" />
                 <TableColumn prefWidth="165.0" text="Expression" />
               </columns>
             </TableView>
             <Label text="Commands History" />
-            <ListView nodeOrientation="LEFT_TO_RIGHT" />
+            <ListView fx:id="commandHistory" nodeOrientation="LEFT_TO_RIGHT" />
          </children>
       </VBox>
    </left>
