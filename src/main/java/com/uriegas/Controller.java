@@ -117,8 +117,20 @@ public class Controller {
         currentScript = null;
         tabs.getSelectionModel().select(1);
     }
-    @FXML//Im gonna treat this as the save button (Y soy rebelde cuando no sigo a los demás)
+    @FXML
     protected void pasteClicked(ActionEvent e){
+        System.out.println("You pressed the back button");
+        //Copy current content to clipboard
+        final Clipboard clip = Clipboard.getSystemClipboard();
+        final ClipboardContent content = new ClipboardContent();
+        if(tabs.getSelectionModel().getSelectedIndex() == 0)
+            content.putString(commandHistory.getItems().toString().replace(", ", "\n").replace("[", "").replace("]", ""));
+        else
+            content.putString(scriptArea.getText());
+        clip.setContent(content);
+    }
+    @FXML
+    protected void backClicked(ActionEvent e){
         //System.out.println("You pressed the paste button");
         if(tabs.getSelectionModel().getSelectedIndex() != 1){
             tabs.getSelectionModel().select(0);
@@ -160,10 +172,6 @@ public class Controller {
                 }
             }
         }
-    }
-    @FXML
-    protected void backClicked(ActionEvent e){
-        System.out.println("You pressed the back button");
     }
     @FXML
     protected void selectDirClicked(ActionEvent e){
