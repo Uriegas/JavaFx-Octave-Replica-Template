@@ -33,6 +33,8 @@ public class Controller {
     private ObservableList<String> listCommands;
     private String oldText;//Text prior user input
     private File currentScript;
+    final Clipboard clip = Clipboard.getSystemClipboard();
+    final ClipboardContent content = new ClipboardContent();
 
 
     /**
@@ -113,16 +115,19 @@ public class Controller {
     @FXML//Todo: new file window
     protected void fileClicked(ActionEvent e){//Just go to the script tab
 //        System.out.println("You pressed the file button");
-        scriptArea.clear();
+        //Cannot create file just open it
+//        FileChooser choose = new FileChooser();
+//        choose.setTitle("Create File as");
+//        currentScript = choose.showOpenDialog(new Stage());
+        //This is for extension of file validation
         currentScript = null;
+        scriptArea.clear();
         tabs.getSelectionModel().select(1);
     }
     @FXML
-    protected void pasteClicked(ActionEvent e){
-        System.out.println("You pressed the back button");
+    protected void copyClicked(ActionEvent e){
+        //System.out.println("You pressed the copy button");
         //Copy current content to clipboard
-        final Clipboard clip = Clipboard.getSystemClipboard();
-        final ClipboardContent content = new ClipboardContent();
         if(tabs.getSelectionModel().getSelectedIndex() == 0)
             content.putString(commandHistory.getItems().toString().replace(", ", "\n").replace("[", "").replace("]", ""));
         else
@@ -130,7 +135,7 @@ public class Controller {
         clip.setContent(content);
     }
     @FXML
-    protected void backClicked(ActionEvent e){
+    protected void saveClicked(ActionEvent e){
         //System.out.println("You pressed the paste button");
         if(tabs.getSelectionModel().getSelectedIndex() != 1){
             tabs.getSelectionModel().select(0);

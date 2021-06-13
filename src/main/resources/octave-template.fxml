@@ -46,27 +46,27 @@
             </MenuBar>
             <HBox prefHeight="0.0" prefWidth="600.0" spacing="4.0">
                <children>
-                  <Button fx:id="fileBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#fileClicked" prefHeight="22.0" prefWidth="33.0">
+                  <Button fx:id="fileBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#fileClicked" prefHeight="33.0" prefWidth="33.0">
                      <graphic>
                         <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@file.png" />
+                              <Image url="@open.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button fx:id="pasteBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pasteClicked" prefHeight="22.0" prefWidth="33.0">
+                  <Button fx:id="pasteBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#copyClicked" prefHeight="33.0" prefWidth="33.0">
                      <graphic>
                         <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@paste.png" />
+                              <Image url="@copy.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button fx:id="backBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#backClicked" prefHeight="22.0" prefWidth="33.0">
+                  <Button fx:id="backBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#saveClicked" prefHeight="33.0" prefWidth="33.0">
                      <graphic>
                         <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@back.png" />
+                              <Image url="@save.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
