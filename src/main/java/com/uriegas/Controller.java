@@ -1,6 +1,5 @@
 package com.uriegas;
 import java.io.*;
-import java.nio.file.Paths;
 
 import javafx.event.*;
 import javafx.fxml.FXML;
@@ -21,6 +20,8 @@ public class Controller {
     @FXML
     private TextArea scriptArea;
     @FXML
+    private TextField currentDir;
+    @FXML
     private Button fileBtn;
     @FXML
     private Button copyBtn;
@@ -28,8 +29,6 @@ public class Controller {
     private Button pasteBtn;
     @FXML
     private Button backBtn;
-    @FXML
-    private Button currentDirBtn;
     @FXML
     private TreeView<File> files;
     @FXML
@@ -49,10 +48,8 @@ public class Controller {
      * executed after constructing everything
      */
     public void initialize(){
-        currentScript = null;
         rootPath = System.getProperty("user.dir");
-        TreeItem<File> root = createFilesTree(new File(rootPath));
-
+        setTreeDir(rootPath);
         files.setCellFactory(new Callback<TreeView<File>,TreeCell<File>>(){
             public TreeCell<File> call(TreeView<File> t){
                 return new TreeCell<File>(){
@@ -64,21 +61,22 @@ public class Controller {
                 };
             }
         });
-        files.setRoot(root);
+//        files.setRoot(root);
         files.setShowRoot(false);
         /**
          * When a doubleClick over File
          * Evaluate if it is an .equ file or a .xlsx to load
          * If not then print an error message to terminal
          */
-//        files.setOnMouseClicked(new EventHandler<MouseEvent>(){
-//            @Override
-//            public void handle(MouseEvent e){
-//                if(e.getButton().equals(MouseButton.PRIMARY))
-//                    if(e.getClickCount() == 2)
-//                        System.out.println("Double clicked");
-//            } 
-//        });
+        files.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent e){
+                if(e.getButton().equals(MouseButton.PRIMARY))
+                    if(e.getClickCount() == 2)
+                        if(files.getSelectionModel().getSelectedItem().getValue().isDirectory())
+                            setTreeDir(files.getSelectionModel().getSelectedItem().getValue().toString());
+            } 
+        });
         /**
          * Adds a listener to the click file in the Treeview
          * When a file is clicked then execute anonymous function
@@ -193,11 +191,7 @@ public class Controller {
     @FXML
     protected void backClicked(ActionEvent e){
         rootPath = rootPath.substring(0, rootPath.lastIndexOf('/'));
-        files.setRoot(createFilesTree(new File(rootPath)));
-    }
-    @FXML
-    protected void selectDirClicked(ActionEvent e){
-        System.out.println("You pressed the selectDir button");
+        setTreeDir(rootPath);
     }
     /**
      * Gets the text entered by the user in the command line area
@@ -305,5 +299,14 @@ public class Controller {
         }catch(IOException e){
             printToTerminal("\nCouldn't read file: " + getFileName(f));
         }
+    }
+    /**
+     * Set the root directory
+     * of the TreeView
+     */
+    private void setTreeDir(String path){
+        currentDir.clear();
+        currentDir.appendText( path.substring(path.lastIndexOf('/'), path.length()) );
+        files.setRoot(createFilesTree(new File(path)));
     }
 }
