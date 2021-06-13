@@ -22,6 +22,9 @@ public class Calculator{
         parser = new Parser();//Evalute input
         evalVisit = new Interpreter();//Computation of input
     }
+    public Double calculate(String in) throws Exception{
+        return( parser.parse(in).accept(evalVisit) ) ;
+    }
     /**
      * Start calculator
      * Just runs the calculator

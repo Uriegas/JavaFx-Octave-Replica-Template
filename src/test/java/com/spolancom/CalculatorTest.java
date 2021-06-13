@@ -19,13 +19,16 @@ public class CalculatorTest {
      * Init inputs(string) and results(double)
      */
     @Test
-    public void CalcTest(){//Initialize values to evaluate
+    public void CalcTest() throws Exception{//Initialize values to evaluate
         input.push("3*5+2");
         result.push((double)3*5+2);
         input.push("3*4 + sin(2) - 2^2 + sqrt(4)");
         result.push( 3 * 4 + Math.sin(2) - Math.pow(2, 2) + Math.sqrt(4) );
         input.push("2*5+5+0-4");//Doesnt supported by ShuntingYardMethod
         result.push((double)2*5+5+(-4));
+        while(!input.isEmpty())
+            assertEquals(c.calculate(input.pop()), result.pop() );
+        //catch(Exception e){System.out.print(e.toString());}
     }
 
 }

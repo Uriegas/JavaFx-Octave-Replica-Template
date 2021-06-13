@@ -62,7 +62,7 @@ public class Tokenizer {
                     break;
                 }
             }
-            if(!match) throw new TokenizerException("Invalid input in: " + s);
+            if(!match) throw new TokenizerException("Invalid input at: " + s);
         }
         tokens.add(new Token(Token.EPSILON, null));//Add end of line token
         return tokens;

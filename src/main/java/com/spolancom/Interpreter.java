@@ -62,6 +62,17 @@ public class Interpreter implements Exp.Visitor<Double>{
             }
         });
         /**
+         * Define sqrt function
+         */
+        envmnt.define("sqrt", new FuncCallable(){
+            @Override
+            public int arity(){return 1;}
+            @Override
+            public Object call(Interpreter interpreter, ArrayList<String> arguments){
+                return Math.sqrt(Double.parseDouble(arguments.get(0)));
+            }
+        });
+        /**
          * Define read function: Handles 2 types of files
          * Xlsx and .equ, to load data and functions
          */
@@ -222,7 +233,7 @@ public class Interpreter implements Exp.Visitor<Double>{
     /**
      * Evalute with the current environment
      * @param e node to evalute
-     * @return Te result of the evaluation
+     * @return The result of the evaluation
      */
     private Double evaluate(Exp e){
         return e.accept(this);
