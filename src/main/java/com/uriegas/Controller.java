@@ -52,21 +52,40 @@ public class Controller {
         files.setRoot(root);
         files.setShowRoot(false);
         /**
+         * When a doubleClick over File
+         * Evaluate if it is an .equ file or a .xlsx to load
+         * If not then print an error message to terminal
+         */
+//        files.setOnMouseClicked(new EventHandler<MouseEvent>(){
+//            @Override
+//            public void handle(MouseEvent e){
+//                if(e.getButton().equals(MouseButton.PRIMARY))
+//                    if(e.getClickCount() == 2)
+//                        System.out.println("Double clicked");
+//            } 
+//        });
+        /**
          * Adds a listener to the click file in the Treeview
          * When a file is clicked then execute anonymous function
+         * If clicked evaluate if it is a .equ or a .xlsx
          */
         oldText = cmdArea.getText();
         files.getSelectionModel().selectedItemProperty()
             .addListener((v, oldValue, newValue)->{
-                if(newValue != null)
-                    printToTerminal(newValue.getValue().toString());
+                if(newValue != null && (newValue.getValue().getPath().endsWith(".equ")
+                                    || newValue.getValue().getPath().endsWith(".xlsx")) )
+                    //Ugly syntax but only gets the file name of a path. Ex: /usr/hermoso/file1.txt -> file1.txt
+                    printToTerminal( '\n' + newValue.getValue().getPath().substring(newValue.getValue().getPath().lastIndexOf('/')+1));
             });
-        
+        /**
+         * The user cannot delete anything before the: '>>'
+         */
         cmdArea.setTextFormatter(new TextFormatter<>(change ->{
             if(change.getCaretPosition() < oldText.length() || change.getAnchor() < oldText.length())
                 return null;
             return change;
         }));
+
         listCommands = FXCollections.observableArrayList();
         commandHistory.setItems(listCommands);
         commandHistory.getSelectionModel().selectedItemProperty().addListener(
