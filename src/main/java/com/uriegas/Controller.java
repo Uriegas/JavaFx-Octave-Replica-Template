@@ -23,7 +23,11 @@ public class Controller {
     @FXML
     private Button fileBtn;
     @FXML
+    private Button copyBtn;
+    @FXML
     private Button pasteBtn;
+    @FXML
+    private Button backBtn;
     @FXML
     private Button currentDirBtn;
     @FXML
@@ -33,6 +37,7 @@ public class Controller {
     private ObservableList<String> listCommands;
     private String oldText;//Text prior user input
     private File currentScript;
+    private String rootPath;
     final Clipboard clip = Clipboard.getSystemClipboard();
     final ClipboardContent content = new ClipboardContent();
 
@@ -45,8 +50,8 @@ public class Controller {
      */
     public void initialize(){
         currentScript = null;
-        TreeItem<File> root = createFilesTree(new File(
-            Paths.get(System.getProperty("user.dir")).toString()));
+        rootPath = System.getProperty("user.dir");
+        TreeItem<File> root = createFilesTree(new File(rootPath));
 
         files.setCellFactory(new Callback<TreeView<File>,TreeCell<File>>(){
             public TreeCell<File> call(TreeView<File> t){
@@ -125,16 +130,6 @@ public class Controller {
         tabs.getSelectionModel().select(1);
     }
     @FXML
-    protected void copyClicked(ActionEvent e){
-        //System.out.println("You pressed the copy button");
-        //Copy current content to clipboard
-        if(tabs.getSelectionModel().getSelectedIndex() == 0)
-            content.putString(commandHistory.getItems().toString().replace(", ", "\n").replace("[", "").replace("]", ""));
-        else
-            content.putString(scriptArea.getText());
-        clip.setContent(content);
-    }
-    @FXML
     protected void saveClicked(ActionEvent e){
         //System.out.println("You pressed the paste button");
         if(tabs.getSelectionModel().getSelectedIndex() != 1){
@@ -177,6 +172,28 @@ public class Controller {
                 }
             }
         }
+    }
+    @FXML
+    protected void copyClicked(ActionEvent e){
+        //System.out.println("You pressed the copy button");
+        //Copy current content to clipboard
+        if(tabs.getSelectionModel().getSelectedIndex() == 0)
+            content.putString(commandHistory.getItems().toString().replace(", ", "\n").replace("[", "").replace("]", ""));
+        else
+            content.putString(scriptArea.getText());
+        clip.setContent(content);
+    }
+    @FXML
+    protected void pasteClicked(ActionEvent e){
+        if(tabs.getSelectionModel().getSelectedIndex() == 1)
+            scriptArea.appendText(clip.getString() + '\n');
+        else
+            printToTerminal("\nPlease paste command history only to Script tab");
+    }
+    @FXML
+    protected void backClicked(ActionEvent e){
+        rootPath = rootPath.substring(0, rootPath.lastIndexOf('/'));
+        files.setRoot(createFilesTree(new File(rootPath)));
     }
     @FXML
     protected void selectDirClicked(ActionEvent e){

@@ -54,14 +54,6 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button fx:id="pasteBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#copyClicked" prefHeight="33.0" prefWidth="33.0">
-                     <graphic>
-                        <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@copy.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
                   <Button fx:id="backBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#saveClicked" prefHeight="33.0" prefWidth="33.0">
                      <graphic>
                         <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
@@ -70,7 +62,33 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
+                  <Button fx:id="copyBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#copyClicked" prefHeight="33.0" prefWidth="33.0">
+                     <graphic>
+                        <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@copy.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Button fx:id="pasteBtn" layoutX="134.0" layoutY="18.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pasteClicked" prefHeight="33.0" prefWidth="33.0">
+                     <graphic>
+                        <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@paste.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Separator orientation="VERTICAL" prefHeight="24.0" prefWidth="19.0" />
+                  <Button fx:id="backBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#backClicked" prefHeight="33.0" prefWidth="33.0">
+                     <graphic>
+                        <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@back.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Label prefHeight="24.0" prefWidth="126.0" text="Current Directory: " />
                   <Button fx:id="currentDirBtn" mnemonicParsing="false" onAction="#selectDirClicked" text="Current Directory" />
                </children>
