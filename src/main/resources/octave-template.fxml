@@ -8,6 +8,8 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
@@ -79,9 +81,6 @@
          </children>
       </VBox>
    </top>
-   <center>
-      <TextArea fx:id="cmdArea" onKeyPressed="#inputStatement" prefHeight="318.0" prefWidth="340.0" text="Welcome to Uriegas Calculator.&#10;Enjoy&#10;&gt;&gt;" BorderPane.alignment="CENTER" />
-   </center>
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
@@ -113,4 +112,20 @@
          </children>
       </VBox>
    </left>
+   <center>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Terminal">
+               <content>
+                  <TextArea fx:id="cmdArea" onKeyPressed="#inputStatement" text="Welcome to Uriegas Calculator.&#10;See Docs tab for more information.&#10;Enjoy.&#10;&gt;&gt;" />
+               </content>
+          </Tab>
+          <Tab closable="false" text="Docs">
+               <content>
+                  <TextArea editable="false" text="The following commands are valid:&#10;save()&#10;load()&#10;sin()&#10;cos()&#10;tan()&#10;&#10;For exiting type:&#10;!exit&#10;" wrapText="true" />
+               </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </center>
 </BorderPane>
