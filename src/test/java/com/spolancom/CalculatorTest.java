@@ -19,7 +19,7 @@ public class CalculatorTest {
      * Init inputs(string) and results(double)
      */
     @Test
-    public void CalcTest() throws Exception{//Initialize values to evaluate
+    public void CalcTest()throws Exception{//Initialize values to evaluate
         input.push("3*5+2");
         result.push((double)3*5+2);
         input.push("3*4 + sin(2) - 2^2 + sqrt(4)");

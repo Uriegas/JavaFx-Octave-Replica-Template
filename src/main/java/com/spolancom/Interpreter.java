@@ -2,7 +2,7 @@ package com.spolancom;
 
 import java.util.ArrayList;
 
-public class Interpreter implements Exp.Visitor<Double>{
+public class Interpreter implements Exp.Visitor<Object>{
     //We dont implement function scope, just global variables
     public Environment envmnt;
     /**
@@ -114,7 +114,7 @@ public class Interpreter implements Exp.Visitor<Double>{
      * We only execute it when we call a function
      */
     @Override
-    public Double visitAssignExpr(Exp.AssignNode expr){
+    public Object visitAssignExpr(Exp.AssignNode expr){
         envmnt.define(expr.name, expr.value);
         return evaluate(expr.value);
     }
@@ -124,7 +124,7 @@ public class Interpreter implements Exp.Visitor<Double>{
      * for the parameters of the expression recursevly
      */
     @Override
-    public Double visitCallExpr(Exp.CallNode expr){
+    public Object visitCallExpr(Exp.CallNode expr){
         try{
             Object func = envmnt.get(expr.name);
             if(func instanceof FuncCallable){
@@ -158,7 +158,7 @@ public class Interpreter implements Exp.Visitor<Double>{
      * Evaluate inner expression an return result
      */
     @Override
-    public Double visitGroupingExpr(Exp.GroupingNode expr){
+    public Object visitGroupingExpr(Exp.GroupingNode expr){
         return evaluate(expr.expression);
     }
     /**
@@ -175,7 +175,7 @@ public class Interpreter implements Exp.Visitor<Double>{
      * Here we search it in the environment
      */
     @Override
-    public Double visitVariableExpr(Exp.Variable expr){//We are searching for variables when their value is just their string, this are strings we can change the parser to accept arguments in '' as strings its var_name = value
+    public Object visitVariableExpr(Exp.Variable expr){//We are searching for variables when their value is just their string, this are strings we can change the parser to accept arguments in '' as strings its var_name = value
         String var_name = expr.name;//Get the name of the token
         Object value = envmnt.get(var_name);
         if(value instanceof String){
@@ -201,9 +201,9 @@ public class Interpreter implements Exp.Visitor<Double>{
      * This evalutes most of the mathematical functions
      */
     @Override
-    public Double visitBinaryExpr(Exp.BinaryNode expr){
-        Double left = evaluate(expr.left);
-        Double right = evaluate(expr.right);
+    public Object visitBinaryExpr(Exp.BinaryNode expr){
+        Object left = evaluate(expr.left);
+        Object right = evaluate(expr.right);
         switch(expr.operator.getToken()){
             case Token.PLUS:
                 if (left instanceof Double && right instanceof Double) {
@@ -223,7 +223,7 @@ public class Interpreter implements Exp.Visitor<Double>{
                 }
             case Token.POW:
                 if (left instanceof Double && right instanceof Double) {
-                    return Math.pow(left, (Double)right);
+                    return Math.pow((Double)left, (Double)right);
                 }
             default:
                 throw new EnvironmentException("Not valid operation in " + left.toString() + " " + expr.operator.getValue() + " " + right.toString());
@@ -235,7 +235,7 @@ public class Interpreter implements Exp.Visitor<Double>{
      * @param e node to evalute
      * @return The result of the evaluation
      */
-    private Double evaluate(Exp e){
+    private Object evaluate(Exp e){
         return e.accept(this);
     }
 
