@@ -113,7 +113,7 @@
       </VBox>
    </left>
    <center>
-      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane fx:id="tabs" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
           <Tab text="Terminal">
                <content>
@@ -122,7 +122,7 @@
           </Tab>
             <Tab text="Script">
                <content>
-                  <TextArea prefHeight="200.0" prefWidth="200.0" />
+                  <TextArea fx:id="scriptArea" prefHeight="200.0" prefWidth="200.0" />
                </content>
             </Tab>
           <Tab closable="false" text="Docs">

@@ -13,7 +13,11 @@ import javafx.collections.*;
 
 public class Controller {
     @FXML
+    private TabPane tabs;
+    @FXML
     private TextArea cmdArea;
+    @FXML
+    private TextArea scriptArea;
     @FXML
     private Button fileBtn;
     @FXML
@@ -73,12 +77,15 @@ public class Controller {
         files.getSelectionModel().selectedItemProperty()
             .addListener((v, oldValue, newValue)->{
                 if(newValue != null && (newValue.getValue().getPath().endsWith(".equ")
-                                    || newValue.getValue().getPath().endsWith(".xlsx")) )
+                                    || newValue.getValue().getPath().endsWith(".xlsx")) ){
                     //Ugly syntax but only gets the file name of a path. Ex: /usr/hermoso/file1.txt -> file1.txt
-                    printToTerminal( '\n' + newValue.getValue().getPath().substring(newValue.getValue().getPath().lastIndexOf('/')+1));
-            });
-        /**
-         * The user cannot delete anything before the: '>>'
+                    printToTerminal( "\nOpening file: " + getFileName(newValue.getValue()));
+                    renderFile(newValue.getValue());
+                    tabs.getSelectionModel().select(1);
+                }
+        });
+    /**
+     * The user cannot delete anything before the: '>>'
          */
         cmdArea.setTextFormatter(new TextFormatter<>(change ->{
             if(change.getCaretPosition() < oldText.length() || change.getAnchor() < oldText.length())
@@ -190,10 +197,32 @@ public class Controller {
     }
     /**
      * Println for the Emulated Terminal
+     * @param text to print
      */
     private void printToTerminal(String str){
         str = str + "\n>>";
         cmdArea.appendText(str);
         oldText = cmdArea.getText();
+    }
+    /**
+     * Helper function to get the name of a full path File
+     * @param file to get name of
+     * @return
+     */
+    private String getFileName(File f){
+        return f.getPath().substring(f.getPath().lastIndexOf('/')+1);
+    }
+    /**
+     * Loads the file into the Script TextArea
+     * @param file to render
+     */
+    private void renderFile(File f){
+        String buff;
+        try(BufferedReader reader = new BufferedReader(new FileReader(f))){
+            while((buff = reader.readLine()) != null)
+                scriptArea.appendText(buff + '\n');
+        }catch(IOException e){
+            printToTerminal("\nCouldn't read file: " + getFileName(f));
+        }
     }
 }

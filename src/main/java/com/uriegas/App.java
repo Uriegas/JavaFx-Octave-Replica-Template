@@ -27,18 +27,15 @@ public class App extends Application {
                 Alert.AlertType.CONFIRMATION,
                 "Are you sure you want to exit?"
             );
-            Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(
-                    ButtonType.OK
-            );
+            Button exitButton = (Button) closeConfirmation.getDialogPane().lookupButton(ButtonType.OK);
             exitButton.setText("Exit");
             closeConfirmation.setHeaderText("Confirm Exit");
             closeConfirmation.initModality(Modality.APPLICATION_MODAL);
             closeConfirmation.initOwner(primaryStage);
 
             Optional<ButtonType> closeResponse = closeConfirmation.showAndWait();
-            if (!ButtonType.OK.equals(closeResponse.get())) {
+            if (!ButtonType.OK.equals(closeResponse.get()))
                 event.consume();
-            }
         });
 
         Parent root = (Parent) loader.load();
@@ -58,7 +55,6 @@ public class App extends Application {
      */
     @Override
     public void stop() {
-        //Here call a new scene for make sure the user wants to exit.
         System.out.println("Doing what has to be done before closing");
     }
 }
