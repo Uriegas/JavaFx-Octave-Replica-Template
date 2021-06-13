@@ -6,6 +6,7 @@ import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
+import javafx.util.Callback;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
@@ -36,6 +37,18 @@ public class Controller {
     public void initialize(){
         TreeItem<File> root = createFilesTree(new File(
             Paths.get(System.getProperty("user.dir")).toString()));
+
+        files.setCellFactory(new Callback<TreeView<File>,TreeCell<File>>(){
+            public TreeCell<File> call(TreeView<File> t){
+                return new TreeCell<File>(){
+                    @Override
+                    protected void updateItem(File item, boolean empty){
+                        super.updateItem(item ,empty);
+                        setText((empty || item == null) ? "" : item.getName());
+                    }
+                };
+            }
+        });
         files.setRoot(root);
         files.setShowRoot(false);
         /**
