@@ -6,10 +6,12 @@ import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
+import javafx.stage.*;
 
 public class Controller {
     @FXML
@@ -30,6 +32,7 @@ public class Controller {
     private ListView<String> commandHistory;
     private ObservableList<String> listCommands;
     private String oldText;//Text prior user input
+    private File currentScript;
 
 
     /**
@@ -39,6 +42,7 @@ public class Controller {
      * executed after constructing everything
      */
     public void initialize(){
+        currentScript = null;
         TreeItem<File> root = createFilesTree(new File(
             Paths.get(System.getProperty("user.dir")).toString()));
 
@@ -74,14 +78,17 @@ public class Controller {
          * If clicked evaluate if it is a .equ or a .xlsx
          */
         oldText = cmdArea.getText();
-        files.getSelectionModel().selectedItemProperty()
+        files.getSelectionModel().selectedItemProperty()//todo: double click
             .addListener((v, oldValue, newValue)->{
-                if(newValue != null && (newValue.getValue().getPath().endsWith(".equ")
-                                    || newValue.getValue().getPath().endsWith(".xlsx")) ){
+                if(newValue != null && (newValue.getValue().getPath().endsWith(".equ"))){
                     //Ugly syntax but only gets the file name of a path. Ex: /usr/hermoso/file1.txt -> file1.txt
                     printToTerminal( "\nOpening file: " + getFileName(newValue.getValue()));
                     renderFile(newValue.getValue());
+                    currentScript = newValue.getValue();
                     tabs.getSelectionModel().select(1);
+                }
+                else if(newValue != null && newValue.getValue().getPath().endsWith(".xlsx")){
+                    printToTerminal("\nHere you ought to load the file");
                 }
         });
     /**
@@ -103,13 +110,56 @@ public class Controller {
                 }});
     }
 
-    @FXML
-    protected void fileClicked(ActionEvent e){
-        System.out.println("You pressed the file button");
+    @FXML//Todo: new file window
+    protected void fileClicked(ActionEvent e){//Just go to the script tab
+//        System.out.println("You pressed the file button");
+        scriptArea.clear();
+        currentScript = null;
+        tabs.getSelectionModel().select(1);
     }
-    @FXML
+    @FXML//Im gonna treat this as the save button (Y soy rebelde cuando no sigo a los demás)
     protected void pasteClicked(ActionEvent e){
-        System.out.println("You pressed the paste button");
+        //System.out.println("You pressed the paste button");
+        if(tabs.getSelectionModel().getSelectedIndex() != 1){
+            tabs.getSelectionModel().select(0);
+            printToTerminal("\n You can only save the Script");
+        }
+        else{//Wants to save the current script
+            if(currentScript != null && currentScript.exists()){
+                try{
+                    PrintWriter savedText = new PrintWriter(currentScript);
+                    BufferedWriter out = new BufferedWriter(savedText);
+                    out.write(scriptArea.getText());
+                    out.close();
+                    tabs.getSelectionModel().select(0);
+                    printToTerminal("\nSuccess saving file: " + getFileName(currentScript));
+                }catch(IOException ex){
+                    tabs.getSelectionModel().select(0);
+                    printToTerminal("\nCouldn't write to file: " + getFileName(currentScript));
+                }
+            }
+            else{//This means that the user wants to save a new file script
+                FileChooser choose = new FileChooser();
+                choose.setTitle("Save as");
+                currentScript = choose.showSaveDialog(new Stage());
+                //This is for extension of file validation
+                if(currentScript.getPath().substring(currentScript.getPath().length() -4) != "equ")
+                    currentScript.renameTo(new File(currentScript.getPath() + ".equ"));
+                try{
+                    if(currentScript != null){
+                        PrintWriter savedText = new PrintWriter(currentScript);
+                        BufferedWriter out = new BufferedWriter(savedText);
+                        out.write(scriptArea.getText());
+                        out.close();
+                        tabs.getSelectionModel().select(0);
+                        printToTerminal("\nSuccess saving file: " + getFileName(currentScript));
+                    }
+                }catch(IOException ex){
+                    tabs.getSelectionModel().select(0);
+                    printToTerminal("\nCouldn't write to file: " + getFileName(currentScript));
+                }
+            }
+        }
     }
     @FXML
     protected void backClicked(ActionEvent e){
@@ -219,6 +269,7 @@ public class Controller {
     private void renderFile(File f){
         String buff;
         try(BufferedReader reader = new BufferedReader(new FileReader(f))){
+            scriptArea.clear();
             while((buff = reader.readLine()) != null)
                 scriptArea.appendText(buff + '\n');
         }catch(IOException e){
