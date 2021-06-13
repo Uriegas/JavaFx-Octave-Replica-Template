@@ -1,10 +1,16 @@
 package com.uriegas;
 import java.io.*;
+import java.util.ArrayList;
 
 import javafx.event.*;
 import javafx.fxml.FXML;
+import javafx.geometry.*;
+import javafx.scene.Scene;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
+import javafx.scene.layout.*;
+import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import javafx.beans.value.ChangeListener;
@@ -211,7 +217,17 @@ public class Controller {
                 //if(input != "" || input != null || input != "\n"){
                     printToTerminal("You entered: " + input);
                     listCommands.add(input);
-                //}
+                    //Code with testing purposes
+                    if(input.equals("circle(x,y)")){
+                        ArrayList<Float> x = new ArrayList<Float>();
+                        ArrayList<Float> y = new ArrayList<Float>();
+                        for(int i = 0; i < 10; i++){
+                            x.add(new Float(i+2.1));
+                            y.add(new Float(i+1.1));
+                        }
+                        plotGraph(x, y);
+                    }
+                        //}
             }
         }
         );
@@ -308,5 +324,31 @@ public class Controller {
         currentDir.clear();
         currentDir.appendText( path.substring(path.lastIndexOf('/'), path.length()) );
         files.setRoot(createFilesTree(new File(path)));
+    }
+    /**
+     * Plot PieChart graph
+     * TODO: Implement this as a Scene and add a copy button to copy the image
+     * @param x
+     * @param y
+     */
+    private void plotGraph(ArrayList<Float> x, ArrayList<Float> y){
+        Text txt = new Text("Circle(x,y)");
+        PieChart p = new PieChart();
+        float xTotal=0, yTotal=0;
+        for(Float data : x)
+            xTotal += data;
+        for(Float data : y)
+            yTotal += data;
+         
+        p.getData().add(new PieChart.Data("x", xTotal));
+        p.getData().add(new PieChart.Data("y", yTotal));
+        VBox vb = new VBox(txt, p);
+        vb.setAlignment(Pos.CENTER);
+        vb.setPadding(new Insets(10, 10, 10, 10));
+
+        Stage s = new Stage();
+        s.setTitle("Circle graph");
+        s.setScene(new Scene(vb, 400, 400));
+        s.show();
     }
 }
