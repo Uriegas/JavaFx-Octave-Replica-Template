@@ -1,5 +1,6 @@
 package com.spolancom;
 
+import java.beans.Expression;
 import java.util.ArrayList;
 
 public class Interpreter implements Exp.Visitor<Object>{
@@ -18,7 +19,7 @@ public class Interpreter implements Exp.Visitor<Object>{
             @Override
             public int arity(){return 1;}
             @Override
-            public Object call(Interpreter interpreter, ArrayList<String> arguments){
+            public Object call(Interpreter interpreter, ArrayList<Object> arguments){
                 try{
                     System.out.println(arguments.get(0));
                 }
@@ -35,8 +36,11 @@ public class Interpreter implements Exp.Visitor<Object>{
             @Override
             public int arity(){return 1;}
             @Override
-            public Object call(Interpreter interpreter, ArrayList<String> arguments){
-                return Math.sin(Double.parseDouble(arguments.get(0)));
+            public Object call(Interpreter interpreter, ArrayList<Object> arguments){
+                if(arguments.get(0) instanceof Double)
+                    return Math.sin((double)arguments.get(0));
+                else
+                    throw new EnvironmentException("Could not convert " + arguments.get(0).toString() + "to number");
             }
         });
         /**
@@ -46,8 +50,11 @@ public class Interpreter implements Exp.Visitor<Object>{
             @Override
             public int arity(){return 1;}
             @Override
-            public Object call(Interpreter interpreter, ArrayList<String> arguments){
-                return Math.cos(Double.parseDouble(arguments.get(0)));
+            public Object call(Interpreter interpreter, ArrayList<Object> arguments){
+                if(arguments.get(0) instanceof Double)
+                    return Math.cos((double)arguments.get(0));
+                else
+                    throw new EnvironmentException("Could not convert " + arguments.get(0).toString() + "to number");
             }
         });
         /**
@@ -57,8 +64,11 @@ public class Interpreter implements Exp.Visitor<Object>{
             @Override
             public int arity(){return 1;}
             @Override
-            public Object call(Interpreter interpreter, ArrayList<String> arguments){
-                return Math.tan(Double.parseDouble(arguments.get(0)));
+            public Object call(Interpreter interpreter, ArrayList<Object> arguments){
+                if(arguments.get(0) instanceof Double)
+                    return Math.tan((double)arguments.get(0));
+                else
+                    throw new EnvironmentException("Could not convert " + arguments.get(0).toString() + "to number");
             }
         });
         /**
@@ -68,8 +78,11 @@ public class Interpreter implements Exp.Visitor<Object>{
             @Override
             public int arity(){return 1;}
             @Override
-            public Object call(Interpreter interpreter, ArrayList<String> arguments){
-                return Math.sqrt(Double.parseDouble(arguments.get(0)));
+            public Object call(Interpreter interpreter, ArrayList<Object> arguments){
+                if(arguments.get(0) instanceof Double)
+                    return Math.sqrt((double)arguments.get(0));
+                else
+                    throw new EnvironmentException("Could not convert " + arguments.get(0).toString() + "to number");
             }
         });
         /**
@@ -80,7 +93,7 @@ public class Interpreter implements Exp.Visitor<Object>{
             @Override
             public int arity(){return 1;}
             @Override
-            public Object call(Interpreter interpreter, ArrayList<String> arguments){
+            public Object call(Interpreter interpreter, ArrayList<Object> arguments){
                 ReadFunction read = new ReadFunction();
                 try{
                     envmnt = read.ReadFile(arguments.get(0), interpreter);
@@ -97,7 +110,7 @@ public class Interpreter implements Exp.Visitor<Object>{
             @Override
             public int arity(){return 2;}
             @Override
-            public Object call(Interpreter interpreter, ArrayList<String> arguments){
+            public Object call(Interpreter interpreter, ArrayList<Object> arguments){
                 SaveFunction s = new SaveFunction();
                 try{
                     s.writetoFile(arguments.get(1), arguments.get(0));
@@ -115,8 +128,16 @@ public class Interpreter implements Exp.Visitor<Object>{
      */
     @Override
     public Object visitAssignExpr(Exp.AssignNode expr){
-        envmnt.define(expr.name, expr.value);
-        return evaluate(expr.value);
+        try{//Try to evaluate the expression, if it doesnt work it is a function
+            Object result = evaluate(expr.value);
+            envmnt.define(expr.name, result);
+            return result;
+        }catch(EnvironmentException ex){//Save the expression and return a success note
+//            envmnt.define(expr.name, expr.value);
+//            FuncCallable f = new FuncCallable();
+//            return "Success loading: " + expr.name;//evaluate(expr.value);
+            return "Could not evaluate this expression";
+        }
     }
     /**
      * Search for the function in the environment
@@ -130,16 +151,18 @@ public class Interpreter implements Exp.Visitor<Object>{
             if(func instanceof FuncCallable){
                 FuncCallable f = (FuncCallable)func;
                 if(f.arity() != expr.arguments.size())
-                    throw new EnvironmentException("Incorrect nomber of parameters for function" + expr.name);
+                    throw new EnvironmentException("Incorrect number of parameters for function" + expr.name);
                 else{
-                    ArrayList<String> args = new ArrayList<String>();
+			//>Maybe I need to fix this
+                    ArrayList<Object> args = new ArrayList<Object>();
                     for(Exp arg : expr.arguments){
                         if(arg instanceof Exp.FileNode)
                             args.add(arg.toString());
-                        else
-                            args.add(String.valueOf(evaluate(arg)));
+                        else//Add the evaluated arguments
+                            args.add(evaluate(arg));
                     }
-                    return (Double)f.call(this, args);
+                    return (Double)f.call(this, args);//Here in the future it is going to recive arrays
+			//<Maybe I need to fix this
                 }
             }
             else if(func instanceof String || func instanceof Double)
@@ -185,6 +208,9 @@ public class Interpreter implements Exp.Visitor<Object>{
                 throw new EnvironmentException("Cannot convert " + var_name + " to number");
             }
         }
+        else if(value instanceof Double){
+            return value;
+        }
         else if(value instanceof Exp){
             return evaluate((Exp) value);
         }
@@ -196,6 +222,15 @@ public class Interpreter implements Exp.Visitor<Object>{
     @Override
     public Double visitFileExpr(Exp.FileNode expr){
         return 0.0;
+    }
+    /**
+     * Evaluate a function definition aka. save in environment
+     */
+    @Override
+    public Object visitFunctionExpr(Exp.FunctionNode expr){
+        FuncDeclaration function = new FuncDeclaration(expr.expression, expr.params);
+        envmnt.define(expr.name.getValue(), function);
+        return this;
     }
     /**
      * This evalutes most of the mathematical functions
@@ -235,7 +270,7 @@ public class Interpreter implements Exp.Visitor<Object>{
      * @param e node to evalute
      * @return The result of the evaluation
      */
-    private Object evaluate(Exp e){
+    public Object evaluate(Exp e){
         return e.accept(this);
     }
 
