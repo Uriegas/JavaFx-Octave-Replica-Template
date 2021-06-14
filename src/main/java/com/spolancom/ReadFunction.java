@@ -16,13 +16,15 @@ public class ReadFunction {
     public ReadFunction(){
     }
     /**
-     * ReadFile method
+     * readFile method
      */
-    public Environment ReadFile(String path, Interpreter i) throws Exception{
-        path = path.substring(1, path.length()-1);
+    public Environment readFile(String path, Interpreter i) throws Exception{
+        if(!path.startsWith("/")){
+            path = System.getProperty("user.dir") + '/' + path;
+        }
+        //path = path.substring(1, path.length()-1);
         if(!(path.endsWith(".equ") || path.endsWith(".xslx")))
-            throw new EnvironmentException("Not valid file extension in path " + path);
-        
+            throw new EnvironmentException("Not valid file extension in file: " + path);
         if(path.endsWith(".equ")){
             System.out.println(path);
             BufferedReader s = new BufferedReader(new FileReader(path));

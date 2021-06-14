@@ -1,6 +1,5 @@
 package com.spolancom;
 
-import java.beans.Expression;
 import java.util.ArrayList;
 
 public class Interpreter implements Exp.Visitor<Object>{
@@ -95,11 +94,15 @@ public class Interpreter implements Exp.Visitor<Object>{
             @Override
             public Object call(Interpreter interpreter, ArrayList<Object> arguments){
                 ReadFunction read = new ReadFunction();
-                try{
-                    envmnt = read.ReadFile((String)arguments.get(0), interpreter);
-                }catch(Exception e){
-                    throw new EnvironmentException("Could'nt read file " + arguments.get(0));
-                }
+                //if(arguments.get(0) instanceof FileNode){
+                    try{
+                        envmnt = read.readFile((String)arguments.get(0), interpreter);
+                    }catch(Exception e){
+                        throw new EnvironmentException("Could not read file " + arguments.get(0));
+                    }
+                //}
+                //else
+                //    throw new EnvironmentException("Not a file");
                 return "Succesful file reading in " + arguments.get(0);
             }
         });
@@ -156,19 +159,18 @@ public class Interpreter implements Exp.Visitor<Object>{
 			//>Maybe I need to fix this
                     ArrayList<Object> args = new ArrayList<Object>();
                     for(Exp arg : expr.arguments){
-                        if(arg instanceof Exp.FileNode)
-                            args.add(arg.toString());
-                        else//Add the evaluated arguments
                             args.add(evaluate(arg));
                     }
-                    return (Double)f.call(this, args);//Here in the future it is going to recive arrays
+                    return f.call(this, args);//Here in the future it is going to recive arrays
 			//<Maybe I need to fix this
                 }
             }
+            //>What is this?
             else if(func instanceof String || func instanceof Double)
                 return (Double)func;
             else if(func instanceof Exp)
                 return evaluate((Exp)func);
+            //<What is this?
             else{
                 throw new EnvironmentException("Incorrect nomber of parameters for function" + expr.name);
             }
@@ -220,8 +222,8 @@ public class Interpreter implements Exp.Visitor<Object>{
      * Im not gonna use this
      */
     @Override
-    public Double visitFileExpr(Exp.FileNode expr){
-        return 0.0;
+    public String visitFileExpr(Exp.FileNode expr){
+        return expr.name;
     }
     /**
      * Evaluate a function definition aka. save in environment

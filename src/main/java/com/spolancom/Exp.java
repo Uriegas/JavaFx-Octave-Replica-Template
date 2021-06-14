@@ -149,9 +149,8 @@ public abstract class Exp {
     static class FileNode extends Exp {
         public String name;
         FileNode(Token t) {
-            name = t.getValue();
-            name = name.substring(1, name.length() - 1);
             this.name = t.getValue();
+            this.name = this.name.substring(1, this.name.length() - 1);
         }
         @Override
         public <R> R accept(Visitor<R> visitor) {
