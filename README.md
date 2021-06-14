@@ -2,6 +2,10 @@
 ### Calculadora científica con interfáz gráfica
 ### TODO
 * Eliminar toString() en [Exp.java](src/main/java/com/spolancom/Exp.java)
+### Reporte
+[Overleaf](https://www.overleaf.com/read/jqchhwctbwmx)
+### Nota
+JavaFx no es adecuado para escribir editores de texto o IDE's por lo que la mayoria de la funcionalidad de Octave no se implementa.  
 ### Objetivo de la Práctica
 
 El alumno deberá demostrar solura en los siguientes temas de la Programación Orientada a Objetos.
