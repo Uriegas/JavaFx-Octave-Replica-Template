@@ -21,7 +21,6 @@ public class Token {//This vars are ids used in Tokenizer and Parser
     public static final int MULT = 3;
     public static final int DIV = 4;
     public static final int POW = 5;
-    //public static final int FUNCTION = 6;
     public static final int IDENTIFIER = 6;
     public static final int OPEN_PARENTHESIS = 7;
     public static final int CLOSE_PARENTHESIS = 8;
@@ -30,6 +29,7 @@ public class Token {//This vars are ids used in Tokenizer and Parser
     public static final int EQUALS = 10;
     public static final int FILE = 11;//Used in read_func
     public static final int COMMA = 12;//Used in save_func
+    public static final int FUNC = 13;//Func keyword
     private Token_Type type;
     private String value;
     

@@ -27,7 +27,7 @@ public class Tokenizer {
         tknmeaning.add(new TknMeaning(Token.OPEN_PARENTHESIS, "\\(|\\["));
         tknmeaning.add(new TknMeaning(Token.CLOSE_PARENTHESIS, "\\)|\\]"));
         tknmeaning.add(new TknMeaning(Token.POW, "\\^"));
-        //tknmeaning.add(new TknMeaning(Token.FUNCTION, "sin|cos|tan|sqrt|read"));
+        tknmeaning.add(new TknMeaning(Token.FUNC, "func"));
         tknmeaning.add(new TknMeaning(Token.NUMBER, "[0-9]+"));
         tknmeaning.add(new TknMeaning(Token.FILE, "(\\'\\w+\\.\\w+\\')"));//Allow points
         tknmeaning.add(new TknMeaning(Token.IDENTIFIER, "[a-zA-Z][a-zA-Z0-9_]*"));//Variable
