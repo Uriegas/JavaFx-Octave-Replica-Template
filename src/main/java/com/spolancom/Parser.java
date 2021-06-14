@@ -253,19 +253,29 @@ public class Parser {
      */
     private Exp call(){//call -> primary ( "(" arguments? ")" )*
         Exp exp = primary();
-        if(previousToken().getToken() == Token.IDENTIFIER && currentToken.getToken() == Token.OPEN_PARENTHESIS){//If the previous token is not a number or expression and the current token is a prenthesis
-            Token fun_name = previousToken();
+        if(previousToken().getToken() == Token.IDENTIFIER && currentToken.getToken() == Token.OPEN_PARENTHESIS){//If the previous token is not a number or expression and the current token is a parenthesis
+        Token fun_name = previousToken();
+        advance();
             ArrayList<Exp> arguments = new ArrayList<>();
-            while(currentToken.getToken() != Token.CLOSE_PARENTHESIS){
-                do{
-                    advance();
-                    arguments.add(assignment());
-                }while(currentToken.getToken() == Token.COMMA);
-                Exp call = new Exp.CallNode(fun_name, arguments);
-                advance();
-                return call;
-            }
-            throw new ParserException("Cannot call expressions: " + previousToken());
+            //if(advance().getToken() != Token.CLOSE_PARENTHESIS){
+                if(currentToken.getToken() == Token.CLOSE_PARENTHESIS){
+                    return new Exp.CallNode(fun_name, arguments);
+                }
+                else{
+                    do{
+                        //advance();
+                        arguments.add(assignment());
+                    }while(advance().getToken() == Token.COMMA);
+                    if(previousToken().getToken() == Token.CLOSE_PARENTHESIS){
+                    Exp call = new Exp.CallNode(fun_name, arguments);
+                    return call;
+                    }
+                    else
+                        throw new ParserException("Expected ')' after parameters");
+
+                }
+            //}
+           // throw new ParserException("Cannot call expressions: " + previousToken());
         }
         return exp;
     }

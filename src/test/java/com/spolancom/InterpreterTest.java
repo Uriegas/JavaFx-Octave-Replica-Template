@@ -29,6 +29,7 @@ public class InterpreterTest{
             "x = 10",
             "y = 20",
             "func gato(x, y) = sin(x) + cos(y)",
+            "func perro() = sin(10) + cos(10)",
         };
 
         for(String s : inputs)
@@ -45,7 +46,8 @@ public class InterpreterTest{
     public static Collection<Object[]> getTestData(){
         return Arrays.asList(new Object[][]{
             {"f1(x, y)", 2*10+20},
-            { "gato(5, 3)", (Math.sin(5.0) + Math.cos(3.0)) }
+            { "gato(5, 3)", (Math.sin(5.0) + Math.cos(3.0)) },
+            {"perro()", Math.sin(10) + Math.cos(10)}
         });
     }
 
