@@ -1,6 +1,7 @@
 # POO-Unidad-2-Actividad-1
 ### Calculadora científica con interfáz gráfica
-
+### TODO
+* Eliminar toString() en [Exp.java](src/main/java/com/spolancom/Exp.java)
 ### Objetivo de la Práctica
 
 El alumno deberá demostrar solura en los siguientes temas de la Programación Orientada a Objetos.
