@@ -31,7 +31,7 @@ public class PrintTree implements Exp.Visitor<String> {
      */
     @Override
     public String visitGroupingExpr(Exp.GroupingNode expr){
-        return "( " + expr.expression.accept(this) + " )";
+        return "(" + expr.expression.accept(this) + ")";
     }
     /**
      * Just get the number inside this node
@@ -50,10 +50,21 @@ public class PrintTree implements Exp.Visitor<String> {
      */
     @Override
     public String visitBinaryExpr(Exp.BinaryNode expr){
-        return "( " + expr.left.accept(this) + expr.operator.getValue() + expr.right.accept(this) + " )";
+        return "(" + expr.left.accept(this) + expr.operator.getValue() + expr.right.accept(this) + ")";
     }
     @Override
     public String visitFileExpr(Exp.FileNode expr){
         return expr.name;//Get the name of the token
+    }
+    @Override
+    public String visitFunctionExpr(Exp.FunctionNode expr){
+        String s = "func " + expr.name.getValue() + "(";
+        if(!expr.params.isEmpty()){
+        for(Token t : expr.params)
+            s += t.getValue() + ", ";
+        s = s.substring(0, s.lastIndexOf(","));
+        }
+        s += ") = " + expr.expression.accept(this);
+        return s;
     }
 }

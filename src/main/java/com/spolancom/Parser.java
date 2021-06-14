@@ -8,8 +8,9 @@ import java.util.LinkedList;
  * the recursive descendent algorithm of type LL(2).
  * 
  * Grammar:
- * expression -> assignment
- * assignment -> IDENTIFIER "=" expression | term
+ * expression -> assignment | "func" function
+ * function -> IDENTIFIER "(" parameters? ")" "=" term  //Esta cosa maybe muere
+ * assignment -> IDENTIFIER "=" assignment | term
  * term -> factor ( ( "-" | "+" ) factor )*
  * factor -> pow ( ( "/" | "*" ) pow )*
  * pow -> call ^ call | call
@@ -23,7 +24,7 @@ public class Parser {
     LinkedList<Token> tokens;
     int current;
     Token currentToken;
-
+    //int num_identifiers;//Use for function definitions
     /**
      * Create the object with the tokens
      * 
@@ -136,21 +137,63 @@ public class Parser {
      * Higher precende is the lowest rule
      * @return root node
      */
-    private Exp expression() {
-        return assignment();
+    private Exp expression() {//expression -> assignment | "func" function
+        if(currentToken.getToken() == Token.FUNC){
+            advance();
+            return function();
+        }
+        else{
+            tokens.addFirst(new Token(Token.EQUALS, "="));
+            tokens.addFirst(new Token(Token.IDENTIFIER, "ans"));
+            current = 0;
+            currentToken = tokens.get(current);
+            return assignment();
+        }
+    }
+    /**
+     * Grammar rule to handle functions declarations
+     * @return
+     */
+    private Exp function(){//function -> IDENTIFIER "(" parameters ")" "=" term
+        Token name = advance();//The function name
+        //Save list of arguments
+        ArrayList<Token> params = new ArrayList<Token>();
+        Exp expression;
+        if(advance().getToken() == Token.OPEN_PARENTHESIS){
+            if(currentToken.getToken() == Token.CLOSE_PARENTHESIS){
+                advance();
+                advance();
+                expression = term();
+            }
+            else{
+                do{
+                    params.add(advance());
+                }while(advance().getToken() == Token.COMMA);
+                if(previousToken().getToken() == Token.CLOSE_PARENTHESIS){
+                    advance();
+                    expression = term();
+                }
+                else
+                    throw new ParserException("Expected ')' after parameters");
+            }
+
+        }
+        else
+            throw new ParserException("Expected '(' after func name ");
+        return new Exp.FunctionNode(name, params, expression);
     }
     /**
      * Grammar rule to handle assignment
      * Or pass to the next rule
      * @return Expression node
      */
-    private Exp assignment() {// assignment -> IDENTIFIER "=" expression | term
+    private Exp assignment() {// assignment -> IDENTIFIER "=" assignment | term
         if ((currentToken.getToken() == Token.IDENTIFIER) && (nextToken().getToken() == Token.EQUALS)) {
             Token name = currentToken;// Point to the name of the token
             advance();// The EQUAL sign "="
             advance();// Point to next token to parse expression
-            return new Exp.AssignNode(name, expression());
-        } else {
+            return new Exp.AssignNode(name, assignment());
+        } else {//If not an assignment append at begin: "ans =" (default environment variable: ans)
             return term();
         }
     }
@@ -216,7 +259,7 @@ public class Parser {
             while(currentToken.getToken() != Token.CLOSE_PARENTHESIS){
                 do{
                     advance();
-                    arguments.add(expression());
+                    arguments.add(assignment());
                 }while(currentToken.getToken() == Token.COMMA);
                 Exp call = new Exp.CallNode(fun_name, arguments);
                 advance();
@@ -234,7 +277,7 @@ public class Parser {
      * Recursivity is seen in: "(" expression ")"
      * @return Expression node 
      */
-    private Exp primary() {// primary -> NUMBER | IDENTIFIER | "(" expression ")"
+    private Exp primary() {// primary -> NUMBER | IDENTIFIER | "(" assignment ")"
         if (currentToken.getToken() == Token.IDENTIFIER) {
             advance();
             return new Exp.Variable(previousToken());
@@ -245,7 +288,7 @@ public class Parser {
         }
         else if (currentToken.getToken() == Token.OPEN_PARENTHESIS) {
             advance();
-            Exp exp = expression();
+            Exp exp = assignment();
             if (currentToken.getToken() != Token.CLOSE_PARENTHESIS) {
                 throw new ParserException("Close parenthesis not found");
             }

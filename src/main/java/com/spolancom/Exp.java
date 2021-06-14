@@ -15,6 +15,7 @@ public abstract class Exp {
         R visitVariableExpr(Variable expr);
         R visitBinaryExpr(BinaryNode expr);
         R visitFileExpr(FileNode expr);
+        R visitFunctionExpr(FunctionNode expr);
     }
     /**
      * Abstract function to evaluate a node
@@ -161,5 +162,25 @@ public abstract class Exp {
             return name;
         }
     }
-
+    /**
+     * Node that handles function definitions
+     */
+    static class FunctionNode extends Exp {
+        public Token name;
+        public List<Token> params;
+        public Exp expression;
+        FunctionNode(Token t, List<Token> params, Exp expression) {
+            this.name = t;
+            this.params = params;
+            this.expression = expression;
+        }
+        @Override
+        public <R> R accept(Visitor<R> visitor) {
+            return visitor.visitFunctionExpr(this);
+        }
+        @Override
+        public String toString() {
+            return name.toString();
+        }
+    }
 }
