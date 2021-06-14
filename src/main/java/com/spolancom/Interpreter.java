@@ -96,7 +96,7 @@ public class Interpreter implements Exp.Visitor<Object>{
             public Object call(Interpreter interpreter, ArrayList<Object> arguments){
                 ReadFunction read = new ReadFunction();
                 try{
-                    envmnt = read.ReadFile(arguments.get(0), interpreter);
+                    envmnt = read.ReadFile((String)arguments.get(0), interpreter);
                 }catch(Exception e){
                     throw new EnvironmentException("Could'nt read file " + arguments.get(0));
                 }
@@ -113,7 +113,7 @@ public class Interpreter implements Exp.Visitor<Object>{
             public Object call(Interpreter interpreter, ArrayList<Object> arguments){
                 SaveFunction s = new SaveFunction();
                 try{
-                    s.writetoFile(arguments.get(1), arguments.get(0));
+                    s.writetoFile((String)arguments.get(1), (String)arguments.get(0));
                 }catch(Exception e){
                     throw new EnvironmentException("Couldn't write to file " + arguments.get(1));
                 }
