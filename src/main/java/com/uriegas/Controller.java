@@ -104,7 +104,7 @@ public class Controller {
         });
     /**
      * The user cannot delete anything before the: '>>'
-         */
+     */
         cmdArea.setTextFormatter(new TextFormatter<>(change ->{
             if(change.getCaretPosition() < oldText.length() || change.getAnchor() < oldText.length())
                 return null;

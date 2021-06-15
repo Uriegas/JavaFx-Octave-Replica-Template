@@ -151,7 +151,7 @@
             </Tab>
           <Tab closable="false" text="Docs">
                <content>
-                  <TextArea editable="false" text="The following commands are valid:&#10;save()&#10;load()&#10;sin()&#10;cos()&#10;tan()&#10;&#10;For exiting type:&#10;!exit&#10;" wrapText="true" />
+                  <TextArea editable="false" text="Uriegas Calculator Documentation&#10;Data types.&#10;This interpreter handles 3 types of data types: NUMBER, FILE, ARRAY.&#10;The first for operation, the second us only used in 2 built-in function and the third for extending functions and operators epxressions (it is used as a number data type).&#10;&#10;Functions&#10;The following functions are native to the Interpreter:&#10;save(expression, 'file'). Saves the result of an expression into a file. &#10;read('file'). Read a .equ file that is a Uriegas Calculator script, also reads a .xlsx file to load data.&#10;sin(expression). Sin trigo function. &#10;cos(expression). Cos trigo function.&#10;tan(expression). Tan trigo function.&#10;sqrt(expression). Square root of an expression.&#10;&#10;User defined functions&#10;You can define your own functions using the following notation:&#10;func function_name(par1, par2 ...) = expression&#10;&#10;Example:&#10;func f1(x, y) = x*10 + y&#10;&#10;Note that this function is defined as a 2 parameter function, so for using it you need to input 2 paramaters when calling it, as:&#10;x = 50 + 40&#10;f1(x, 10*sin(x))&#10;&#10;For exiting type:&#10;!exit&#10;&#10;This program is under development, for more information see: &#10;" wrapText="true" />
                </content>
           </Tab>
         </tabs>
