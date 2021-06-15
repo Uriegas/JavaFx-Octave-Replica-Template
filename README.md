@@ -3,6 +3,9 @@
 ### TODO
 * Eliminar toString() en [Exp.java](src/main/java/com/spolancom/Exp.java)
 * Need a better file handling (Mostly in excel: validation required)
+* Read function doesn't have support of expressions in cells, just for numbers, need to change that to support things like x_1 -> {(13+ sin(3.5)), 3, 4.58*cos(1), ...}
+* Special variable ans doesn't work well: can't use it for operations
+* User defined arrays are not still supported, should add them in [Parser.java](src/main/java/com/spolancom/Parser.java)
 ### Reporte
 [Overleaf](https://www.overleaf.com/read/jqchhwctbwmx)
 ### Nota
