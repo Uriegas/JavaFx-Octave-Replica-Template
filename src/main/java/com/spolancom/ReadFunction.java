@@ -49,7 +49,7 @@ public class ReadFunction {
             Iterator<Row> rowIt = sheet.rowIterator();
             
             ArrayList<String> names = new ArrayList<String>();
-            List<List<Double>> values = new ArrayList<List<Double>>();
+            List<List<Exp>> values = new ArrayList<List<Exp>>();
 
             //-->Get indexes of table (column names)
             Iterator<Cell> c = rowIt.next().cellIterator();
@@ -67,9 +67,9 @@ public class ReadFunction {
                     Cell cell = rowIt.next().getCell(j);
                     if(cell != null){
                         if(cell.getCellType() == CellType.NUMERIC)
-                            values.get(j).add(cell.getNumericCellValue());
+                            values.get(j).add( new Exp.NumberNode( String.valueOf(cell.getNumericCellValue()) ) );
                         else if(cell.getCellType() == CellType.NUMERIC && cell.getCachedFormulaResultType() == CellType.NUMERIC)
-                            values.get(j).add(cell.getNumericCellValue());
+                            values.get(j).add( new Exp.NumberNode( String.valueOf(cell.getNumericCellValue()) ) );
                     }
                 }
                 rowIt = sheet.rowIterator();
@@ -78,7 +78,7 @@ public class ReadFunction {
 
             //Save data to environment
             for( int k = 0; k < names.size(); k++ ){
-                i.envmnt.define(names.get(k), values.get(k));
+                i.envmnt.define(names.get(k), new Exp.ArrayNode(values.get(k)));
             }
             worksheet.close();
             file.close();

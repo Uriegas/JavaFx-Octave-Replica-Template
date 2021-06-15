@@ -67,4 +67,18 @@ public class PrintTree implements Exp.Visitor<String> {
         s += ") = " + expr.expression.accept(this);
         return s;
     }
+    /**
+     * Evaluate an array node, simply return the List<Exp>
+     */
+    @Override
+    public String visitArrayNode(Exp.ArrayNode expr){
+        String s = "[ ";
+        if(!expr.expression.isEmpty()){
+            for(Exp t : expr.expression)
+                s += t.accept(this) + ", ";
+            s = s.substring(0, s.lastIndexOf(","));
+        }
+        s += ']';
+        return s;
+    }
 }

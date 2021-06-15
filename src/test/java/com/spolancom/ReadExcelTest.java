@@ -19,15 +19,15 @@ public class ReadExcelTest {
         interpreter = new Interpreter();
         expected = interpreter.getEnv();
 
-        List<List<Double>> values = new ArrayList<List<Double>>();
-        values.add(new ArrayList<Double>());
-        values.add(new ArrayList<Double>());
-        values.get(0).add(0.0);
-        values.get(0).add(1.0);
-        values.get(0).add(2.0);
-        values.get(1).add(10.0);
-        values.get(1).add(9.0);
-        values.get(1).add(8.0);
+        List<List<Exp>> values = new ArrayList<List<Exp>>();
+        values.add(new ArrayList<Exp>());
+        values.add(new ArrayList<Exp>());
+        values.get(0).add(new Exp.NumberNode("0.0"));
+        values.get(0).add(new Exp.NumberNode("1.0"));
+        values.get(0).add(new Exp.NumberNode("2.0"));
+        values.get(1).add(new Exp.NumberNode("10.0"));
+        values.get(1).add(new Exp.NumberNode("9.0"));
+        values.get(1).add(new Exp.NumberNode("8.0"));
 
         expected.define("x_1", values.get(0));
         expected.define("x_2", values.get(1));

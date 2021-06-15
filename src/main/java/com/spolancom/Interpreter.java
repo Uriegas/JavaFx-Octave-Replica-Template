@@ -232,7 +232,7 @@ public class Interpreter implements Exp.Visitor<Object>{
     public Object visitFunctionExpr(Exp.FunctionNode expr){
         FuncDeclaration function = new FuncDeclaration(expr.expression, expr.params);
         envmnt.define(expr.name.getValue(), function);
-        return this;
+        return function;//Returns a pointer to the function
     }
     /**
      * This evalutes most of the mathematical functions
@@ -266,7 +266,13 @@ public class Interpreter implements Exp.Visitor<Object>{
                 throw new EnvironmentException("Not valid operation in " + left.toString() + " " + expr.operator.getValue() + " " + right.toString());
         }
     }
-
+    /**
+     * Evaluate an array node, simply return the List<Exp>
+     */
+    @Override
+    public Object visitArrayNode(Exp.ArrayNode expr){
+        return expr.expression;//Return the list of expression
+    }
     /**
      * Evalute with the current environment
      * @param e node to evalute

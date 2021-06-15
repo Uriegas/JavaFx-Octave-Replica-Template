@@ -16,6 +16,7 @@ public abstract class Exp {
         R visitBinaryExpr(BinaryNode expr);
         R visitFileExpr(FileNode expr);
         R visitFunctionExpr(FunctionNode expr);
+        R visitArrayNode(ArrayNode expr);
     }
     /**
      * Abstract function to evaluate a node
@@ -113,7 +114,7 @@ public abstract class Exp {
     static class NumberNode extends Exp {
         public String value;
         NumberNode(String value) {
-        this.value = value;
+            this.value = value;
         }
 
         @Override
@@ -180,6 +181,24 @@ public abstract class Exp {
         @Override
         public String toString() {
             return name.toString();
+        }
+    }
+    /**
+     * Node that handles arrays
+     */
+    static class ArrayNode extends Exp {
+        public List<Exp> expression;
+        ArrayNode(List<Exp> expression) {
+            this.expression = expression;
+        }
+
+        @Override
+        public <R> R accept(Visitor<R> visitor) {
+            return visitor.visitArrayNode(this);
+        }
+        @Override
+        public String toString() {
+            return expression.toString();
         }
     }
 }
