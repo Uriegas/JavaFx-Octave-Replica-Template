@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
-  <groupId>com.spolancom</groupId>
-  <artifactId>poo-unidad-1-actividad-1-Uriegas</artifactId>
+  <groupId>com.uriegas</groupId>
+  <artifactId>practicaFX</artifactId>
+  <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-
-  <name>poo-unidad-1-actividad-1-Uriegas</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.maven.com</url>
-
+  <name>practicaFX</name>
+  <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>13</maven.compiler.source>
     <maven.compiler.target>13</maven.compiler.target>
   </properties>
-
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -30,8 +26,17 @@
       <artifactId>poi-ooxml</artifactId>
       <version>4.1.2</version>
     </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>11</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>11</version>
+    </dependency>
   </dependencies>
-
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
@@ -57,7 +62,7 @@
           <artifactId>exec-maven-plugin</artifactId>
           <version>3.0.0</version>
           <configuration>
-            <mainClass>com.spolancom.App</mainClass>
+            <mainClass>com.uriegas.App</mainClass>
           </configuration>
         </plugin>
         <plugin>
@@ -72,7 +77,7 @@
               <manifest>
                 <addClasspath>true</addClasspath>
                 <classpathPrefix>lib/</classpathPrefix>
-                <mainClass>com.spolancom.App</mainClass>
+                <mainClass>com.uriegas.App</mainClass>
               </manifest>
             </archive>
           </configuration>
@@ -93,6 +98,14 @@
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.openjfx</groupId>
+          <artifactId>javafx-maven-plugin</artifactId>
+          <version>0.0.6</version>
+          <configuration>
+              <mainClass>HelloFX</mainClass>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>

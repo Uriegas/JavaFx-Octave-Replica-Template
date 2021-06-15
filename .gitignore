@@ -1,9 +1,11 @@
-/target
 .project
 .classpath
-/.settings
 *.equ
 *.xlsx
 *.txt
 *.trc
 *.phd
+target/
+.vscode/
+.settings/
+.project
