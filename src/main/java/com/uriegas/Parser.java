@@ -19,6 +19,7 @@ import java.util.LinkedList;
  * 
  * This implementatino is based on:
  * https://www.craftinginterpreters.com/appendix-i.html
+ * which implements a simple recursive descendent parser
  */
 public class Parser {
     LinkedList<Token> tokens;
@@ -35,7 +36,6 @@ public class Parser {
         tokens = (LinkedList<Token>) t.clone();
         currentToken = tokens.getFirst();
     }
-
     /**
      * Tokenize the string before parsing it
      * 
@@ -47,7 +47,6 @@ public class Parser {
         t.tokenize(str);
         tokens = t.getTokens();
     }
-
     /**
      * Dummy constructor
      */
@@ -55,7 +54,6 @@ public class Parser {
         current = 0;
         tokens = new LinkedList<Token>();
     }
-
     /**
      * Just get the next token in the tokens
      * Although we define an EPSILON the parser is
@@ -81,7 +79,6 @@ public class Parser {
             throw new TokenizerException("Yo, you tried access a non existen previous token");
         }
     }
-
     /**
      * Advance to the next
      * MOVES the currentToken to the next token
@@ -93,7 +90,6 @@ public class Parser {
         currentToken = tokens.get(current);
         return previousToken();
     }
-
     /**
      * Actual method that parses the tokens 
      * Implements recursive descendent parsing
@@ -110,7 +106,6 @@ public class Parser {
             throw new ParserException("Syntax Error");
         return e;
     }
-
     /**
      * Implements recursive descendent parsing
      * Parse from string, use tokenizer
@@ -124,11 +119,10 @@ public class Parser {
         currentToken = tokens.get(current);
         // Recursive descendent parsing implementation
         Exp e = expression();
-        if(currentToken.getType() == null || currentToken.getToken() == Token.EPSILON)
+        if(currentToken == null || currentToken.getToken() == Token.EPSILON)
             return e;
         throw new ParserException("Invalid token: " + currentToken.toString());
     }
-
     /**
      * Here starts the Parser aka grammar rules
      * Everything the user enters is an expression
@@ -152,7 +146,7 @@ public class Parser {
     }
     /**
      * Grammar rule to handle functions declarations
-     * @return
+     * @return Expression node
      */
     private Exp function(){//function -> IDENTIFIER "(" parameters ")" "=" term
         Token name = advance();//The function name
@@ -212,7 +206,6 @@ public class Parser {
         }
         return exp;
     }
-
     /**
      * Grammar rule to handle factors
      * Or pass to the next rule
@@ -228,7 +221,6 @@ public class Parser {
         }
         return exp;
     }
-
     /**
      * Grammar rule to handle pow (^)
      * Or pass to the next rule
@@ -244,12 +236,11 @@ public class Parser {
         }
         return exp;
     }
-
     /**
      * Grammar rule for a function call
      * In the future we need to change the distintion between variable and function
      * To abstract it to only an identifier
-     * @return
+     * @return Expression node
      */
     private Exp call(){//call -> primary ( "(" arguments? ")" )*
         Exp exp = primary();
