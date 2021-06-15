@@ -40,4 +40,12 @@ public class Environment {
         }
         return results;
     }
+    /**
+     * Compares two environments
+     * ALERT: Just compares key sets not mapped values
+     * @return boolean
+     */
+    public boolean equals(Environment e){
+        return values.keySet().equals(e.values.keySet());
+}
 }
