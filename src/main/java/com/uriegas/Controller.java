@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.geometry.*;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
@@ -22,7 +23,7 @@ import javafx.stage.*;
  */
 public class Controller {
     //Model (logical part of the program): the calcuator
-    Calculator calc;
+    private Calculator calculator;
     @FXML
     private TabPane tabs;
     @FXML
@@ -58,6 +59,7 @@ public class Controller {
      * executed after constructing everything
      */
     public void initialize(){
+        calculator = new Calculator();
         rootPath = System.getProperty("user.dir");
         setTreeDir(rootPath);
         /**
@@ -225,21 +227,32 @@ public class Controller {
                 String[] text = cmdArea.getText().split("\n");
                 String input = text[text.length - 1];
                 input = input.substring(2, input.length());
-                //This if doesn't work, don't know why
-                //if(input != "" || input != null || input != "\n"){
-                    printToTerminal("You entered: " + input);
-                    listCommands.add(input);
-                    //Code with testing purposes
-                    if(input.equals("circle(x,y)")){
-                        ArrayList<Float> x = new ArrayList<Float>();
-                        ArrayList<Float> y = new ArrayList<Float>();
-                        for(int i = 0; i < 10; i++){
-                            x.add(new Float(i+2.1));
-                            y.add(new Float(i+1.1));
-                        }
-                        plotGraph(x, y);
+                if(input.equals("!exit")){//Request close app(stage)
+                    Node source = (Node)event.getSource();
+                    Stage stage = (Stage)source.getScene().getWindow();
+                    printToTerminal("Trying to close...");
+                    stage.getOnCloseRequest().handle(null);
+                    stage.close();
+                }
+                else{//Parse the input
+                    try{
+                        printToTerminal(String.valueOf(calculator.calculate(input)));
+                        listCommands.add(input);
+                    }catch(Exception exception){
+                        printToTerminal(exception.getMessage());
                     }
-                        //}
+                }
+                //printToTerminal("You entered: " + input);
+                    //Code with testing purposes
+//                    if(input.equals("circle(x,y)")){
+//                        ArrayList<Float> x = new ArrayList<Float>();
+//                        ArrayList<Float> y = new ArrayList<Float>();
+//                        for(int i = 0; i < 10; i++){
+//                            x.add(new Float(i+2.1));
+//                            y.add(new Float(i+1.1));
+//                        }
+//                        plotGraph(x, y);
+//                    }
             }
         }
         );

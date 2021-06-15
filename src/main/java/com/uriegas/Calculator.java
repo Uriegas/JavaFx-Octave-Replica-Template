@@ -46,9 +46,7 @@ public class Calculator{
         input = s.nextLine();
         while(!input.equals("!exit")){
             try{
-                Exp result = parser.parse(input);
-//                System.out.println("Procceded input maps to: " + result.accept(printVisit));
-                System.out.println(result.accept(evalVisit));
+                System.out.println(parser.parse(input).accept(evalVisit));
             }
             catch(TokenizerException e){
                 System.out.println(e.getMessage());

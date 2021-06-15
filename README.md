@@ -6,6 +6,7 @@
 * Read function doesn't have support of expressions in cells, just for numbers, need to change that to support things like x_1 -> {(13+ sin(3.5)), 3, 4.58*cos(1), ...}
 * Special variable ans doesn't work well: can't use it for operations
 * User defined arrays are not still supported, should add them in [Parser.java](src/main/java/com/spolancom/Parser.java)
+* Not valid operations after performing a function in Arrays. Ex. x_1 * sin(x_1) throws not valid operation in both arrays of the same length. EDIT. It seems that I cannot do more than 1 operation; ex. x_1 * x_2 WORKS!, x_1 * x_2 + x_1 FAILS.
 ### Reporte
 [Overleaf](https://www.overleaf.com/read/jqchhwctbwmx)
 ### Nota
