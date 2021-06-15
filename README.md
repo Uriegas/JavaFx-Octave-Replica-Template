@@ -2,6 +2,7 @@
 ### Calculadora científica con interfáz gráfica
 ### TODO
 * Eliminar toString() en [Exp.java](src/main/java/com/spolancom/Exp.java)
+* Need a better file handling (Mostly in excel: validation required)
 ### Reporte
 [Overleaf](https://www.overleaf.com/read/jqchhwctbwmx)
 ### Nota
