@@ -77,10 +77,14 @@ public class Controller {
         files.setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent e){
-                if(e.getButton().equals(MouseButton.PRIMARY))
-                    if(e.getClickCount() == 2)
-                        if(files.getSelectionModel().getSelectedItem().getValue().isDirectory())
+                if(e.getButton().equals(MouseButton.PRIMARY)){
+                    if(e.getClickCount() == 2){
+                        if(files.getSelectionModel().getSelectedItem().getValue().isDirectory()){
+                            rootPath = files.getSelectionModel().getSelectedItem().getValue().toString();
                             setTreeDir(files.getSelectionModel().getSelectedItem().getValue().toString());
+                        }
+                    }
+                }
             } 
         });
         /**
