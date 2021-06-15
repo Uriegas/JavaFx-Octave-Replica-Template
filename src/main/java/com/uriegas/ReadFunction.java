@@ -16,7 +16,8 @@ public class ReadFunction {
     public ReadFunction(){
     }
     /**
-     * readFile method
+     * readFile method: reads .equ and .xlsx files,
+     * implementes external libraries due to xlsx format
      */
     public Environment readFile(String path, Interpreter i) throws Exception{
         if(!path.startsWith("/")){

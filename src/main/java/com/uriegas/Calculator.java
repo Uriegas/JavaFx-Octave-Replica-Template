@@ -22,12 +22,19 @@ public class Calculator{
         parser = new Parser();//Evalute input
         evalVisit = new Interpreter();//Computation of input
     }
+    /**
+     * Allows other programs to interact with the calculator
+     * This is the main method of the Calculator
+     * @param in an expression in String format
+     * @return Object representing the evaluated expression
+     * @throws Exception whatever expression that the program throws
+     */
     public Object calculate(String in) throws Exception{
         return( parser.parse(in).accept(evalVisit) ) ;
     }
     /**
-     * Start calculator
-     * Just runs the calculator
+     * Start calculator, simple REPL
+     * Just runs the calculator in CLI
      * @return Exit state
      */
     public int run(){

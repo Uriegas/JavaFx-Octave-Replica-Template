@@ -17,8 +17,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
 import javafx.stage.*;
-
+/**
+ * Controller of the view (fxml)
+ */
 public class Controller {
+    //Model (logical part of the program): the calcuator
+    Calculator calc;
     @FXML
     private TabPane tabs;
     @FXML
@@ -56,6 +60,10 @@ public class Controller {
     public void initialize(){
         rootPath = System.getProperty("user.dir");
         setTreeDir(rootPath);
+        /**
+         * Adds labels to folders and files, just their names 
+         * without full path. Ex: /usr/bin/archivo.xlsx -> archivo.xlsx
+         */
         files.setCellFactory(new Callback<TreeView<File>,TreeCell<File>>(){
             public TreeCell<File> call(TreeView<File> t){
                 return new TreeCell<File>(){
@@ -106,9 +114,9 @@ public class Controller {
                     printToTerminal("\nHere you ought to load the file");
                 }
         });
-    /**
-     * The user cannot delete anything before the: '>>'
-     */
+        /**
+         * The user cannot delete anything before the: '>>'
+         */
         cmdArea.setTextFormatter(new TextFormatter<>(change ->{
             if(change.getCaretPosition() < oldText.length() || change.getAnchor() < oldText.length())
                 return null;

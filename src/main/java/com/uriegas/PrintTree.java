@@ -1,5 +1,9 @@
 package com.uriegas;
-
+/**
+ * Visitor to the Exp classes that instead of perform
+ * operations performs printing of AST's.
+ * It is used only to visually verify correctness of parsing
+ */
 public class PrintTree implements Exp.Visitor<String> {
     String print(Exp expr) {
         return expr.accept(this);
@@ -52,10 +56,16 @@ public class PrintTree implements Exp.Visitor<String> {
     public String visitBinaryExpr(Exp.BinaryNode expr){
         return "(" + expr.left.accept(this) + expr.operator.getValue() + expr.right.accept(this) + ")";
     }
+    /**
+     * Get the name of the current file
+     */
     @Override
     public String visitFileExpr(Exp.FileNode expr){
-        return expr.name;//Get the name of the token
+        return "'" + expr.name + "'";//Get the name of the token
     }
+    /**
+     * Evaluate a function declaration
+     */
     @Override
     public String visitFunctionExpr(Exp.FunctionNode expr){
         String s = "func " + expr.name.getValue() + "(";

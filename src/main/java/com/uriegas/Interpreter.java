@@ -228,23 +228,7 @@ public class Interpreter implements Exp.Visitor<Object>{
      * Here we search it in the environment
      */
     @Override
-    public Object visitVariableExpr(Exp.Variable expr){//We are searching for variables when their value is just their string, this are strings we can change the parser to accept arguments in '' as strings its var_name = value
-//        String var_name = expr.name;//Get the name of the token
-//        Object value = envmnt.get(var_name);
-//        if(value instanceof String){
-//            try{
-//                return Double.parseDouble(value.toString());
-//            }catch(Exception e){
-//                throw new EnvironmentException("Cannot convert " + var_name + " to number");
-//            }
-//        }
-//        else if(value instanceof Double){
-//            return value;
-//        }
-//        else if(value instanceof Exp){
-//            return evaluate(value);
-//        }
-//        throw new EnvironmentException("No match type for the variable " + var_name);
+    public Object visitVariableExpr(Exp.Variable expr){
         return envmnt.get(expr.name) ;
     }
     /**
