@@ -3,12 +3,6 @@ package com.uriegas;
 import static org.junit.Assert.assertTrue;
 
 import java.util.*;
-
-import com.uriegas.Environment;
-import com.uriegas.Exp;
-import com.uriegas.Interpreter;
-import com.uriegas.ReadFunction;
-
 import org.junit.*;
 
 public class ReadExcelTest {

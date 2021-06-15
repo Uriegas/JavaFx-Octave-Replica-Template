@@ -4,10 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.Collection;
-
-import com.uriegas.Interpreter;
-import com.uriegas.Parser;
-
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

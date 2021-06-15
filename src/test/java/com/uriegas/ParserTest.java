@@ -1,12 +1,6 @@
 package com.uriegas;
 
 import static org.junit.Assert.assertEquals;
-
-import com.uriegas.Exp;
-import com.uriegas.Interpreter;
-import com.uriegas.Parser;
-import com.uriegas.PrintTree;
-
 import org.junit.Test;
 /**
  * Test the Parser

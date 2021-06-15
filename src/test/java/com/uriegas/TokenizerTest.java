@@ -1,12 +1,7 @@
 package com.uriegas;
 
 import static org.junit.Assert.*;
-
 import java.util.Stack;
-
-import com.uriegas.Tokenizer;
-import com.uriegas.TokenizerException;
-
 import org.junit.Test;
 
 public class TokenizerTest {

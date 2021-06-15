@@ -1,16 +1,6 @@
 package com.uriegas;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-
 import java.util.*;
-
-import com.uriegas.Exp;
-import com.uriegas.Interpreter;
-import com.uriegas.Parser;
-import com.uriegas.PrintTree;
-
-import org.apache.poi.util.ArrayUtil;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

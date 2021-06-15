@@ -1,12 +1,7 @@
 package com.uriegas;
 
 import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
 import java.util.Stack;
-
-import com.uriegas.Calculator;
-
 import org.junit.Test;
 
 /**

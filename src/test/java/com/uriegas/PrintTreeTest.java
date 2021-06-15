@@ -5,9 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.Collection;
 
-import com.uriegas.Parser;
-import com.uriegas.PrintTree;
-
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
