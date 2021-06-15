@@ -28,8 +28,11 @@ public class InterpreterTest{
             "func f1(var, var2) = 2*var + var2",
             "x = 10",
             "y = 20",
+//            "z = [x, y, 10, 45]",
+//            "w = [10, 50, 32, 43]",
             "func gato(x, y) = sin(x) + cos(y)",
-            "func perro() = sin(10) + cos(10)",
+//            "gato(z,w)",
+            "func perro() = sin(10) + cos(10)"
         };
 
         for(String s : inputs)

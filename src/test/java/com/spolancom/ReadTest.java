@@ -25,7 +25,7 @@ public class ReadTest {
         p = new Parser();
         eval = new Interpreter();
         String[] inputs = new String[]{
-            "read('archivo1.equ')", "Succesfully loaded file"
+            "read('archivo1.equ')"
         };
 
         for(String s : inputs)
