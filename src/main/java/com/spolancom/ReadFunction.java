@@ -78,7 +78,7 @@ public class ReadFunction {
 
             //Save data to environment
             for( int k = 0; k < names.size(); k++ ){
-                i.envmnt.define(names.get(k), new Exp.ArrayNode(values.get(k)));
+                i.envmnt.define(names.get(k), values.get(k));
             }
             worksheet.close();
             file.close();

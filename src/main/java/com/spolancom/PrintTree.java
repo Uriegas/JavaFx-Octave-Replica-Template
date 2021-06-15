@@ -24,7 +24,7 @@ public class PrintTree implements Exp.Visitor<String> {
             s += arg.accept(this) + ", ";
         s = s.substring(0, s.length()-1);
         s = s.substring(0, s.length()-1);
-        return s += " )";
+        return s += ")";
     }
     /**
      * Evaluate inner expression an return result
