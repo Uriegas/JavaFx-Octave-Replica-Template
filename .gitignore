@@ -4,3 +4,6 @@
 /.settings
 *.equ
 *.xlsx
+*.txt
+*.trc
+*.phd
