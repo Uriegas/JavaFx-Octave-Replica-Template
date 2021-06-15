@@ -1,6 +1,6 @@
 package com.spolancom;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Interpreter implements Exp.Visitor<Object>{
     //We dont implement function scope, just global variables
@@ -38,6 +38,13 @@ public class Interpreter implements Exp.Visitor<Object>{
             public Object call(Interpreter interpreter, ArrayList<Object> arguments){
                 if(arguments.get(0) instanceof Double)
                     return Math.sin((double)arguments.get(0));
+                else if(arguments.get(0) instanceof ArrayList<?>){
+                    Iterator<Exp> it = ((ArrayList)arguments.get(0)).iterator();
+                    ArrayList<Double> results = new ArrayList<Double>();
+                    while(it.hasNext())
+                        results.add( Math.sin((Double)evaluate(it.next())) );
+                    return results;
+                }
                 else
                     throw new EnvironmentException("Could not convert " + arguments.get(0).toString() + "to number");
             }
@@ -52,6 +59,13 @@ public class Interpreter implements Exp.Visitor<Object>{
             public Object call(Interpreter interpreter, ArrayList<Object> arguments){
                 if(arguments.get(0) instanceof Double)
                     return Math.cos((double)arguments.get(0));
+                else if(arguments.get(0) instanceof ArrayList<?>){
+                    Iterator<Exp> it = ((ArrayList)arguments.get(0)).iterator();
+                    ArrayList<Double> results = new ArrayList<Double>();
+                    while(it.hasNext())
+                        results.add( Math.cos((Double)evaluate(it.next())) );
+                    return results;
+                }
                 else
                     throw new EnvironmentException("Could not convert " + arguments.get(0).toString() + "to number");
             }
@@ -66,6 +80,13 @@ public class Interpreter implements Exp.Visitor<Object>{
             public Object call(Interpreter interpreter, ArrayList<Object> arguments){
                 if(arguments.get(0) instanceof Double)
                     return Math.tan((double)arguments.get(0));
+                else if(arguments.get(0) instanceof ArrayList<?>){
+                    Iterator<Exp> it = ((ArrayList)arguments.get(0)).iterator();
+                    ArrayList<Double> results = new ArrayList<Double>();
+                    while(it.hasNext())
+                        results.add( Math.cos((Double)evaluate(it.next())) );
+                    return results;
+                }
                 else
                     throw new EnvironmentException("Could not convert " + arguments.get(0).toString() + "to number");
             }
@@ -80,6 +101,13 @@ public class Interpreter implements Exp.Visitor<Object>{
             public Object call(Interpreter interpreter, ArrayList<Object> arguments){
                 if(arguments.get(0) instanceof Double)
                     return Math.sqrt((double)arguments.get(0));
+                else if(arguments.get(0) instanceof ArrayList<?>){
+                    Iterator<Exp> it = ((ArrayList)arguments.get(0)).iterator();
+                    ArrayList<Double> results = new ArrayList<Double>();
+                    while(it.hasNext())
+                        results.add( Math.sqrt((Double)evaluate(it.next())) );
+                    return results;
+                }
                 else
                     throw new EnvironmentException("Could not convert " + arguments.get(0).toString() + "to number");
             }
@@ -130,17 +158,17 @@ public class Interpreter implements Exp.Visitor<Object>{
      * We only execute it when we call a function
      */
     @Override
-    public Object visitAssignExpr(Exp.AssignNode expr){
-        try{//Try to evaluate the expression, if it doesnt work it is a function
+    public Object visitAssignExpr(Exp.AssignNode expr)throws EnvironmentException{
+//        try{//Try to evaluate the expression, if it doesnt work it is a function
             Object result = evaluate(expr.value);
             envmnt.define(expr.name, result);
             return result;
-        }catch(EnvironmentException ex){//Save the expression and return a success note
+//        }catch(EnvironmentException ex){//Save the expression and return a success note
 //            envmnt.define(expr.name, expr.value);
 //            FuncCallable f = new FuncCallable();
 //            return "Success loading: " + expr.name;//evaluate(expr.value);
-            return "Could not evaluate this expression";
-        }
+//            return "Could not evaluate this expression";
+//        }
     }
     /**
      * Search for the function in the environment
@@ -201,25 +229,26 @@ public class Interpreter implements Exp.Visitor<Object>{
      */
     @Override
     public Object visitVariableExpr(Exp.Variable expr){//We are searching for variables when their value is just their string, this are strings we can change the parser to accept arguments in '' as strings its var_name = value
-        String var_name = expr.name;//Get the name of the token
-        Object value = envmnt.get(var_name);
-        if(value instanceof String){
-            try{
-                return Double.parseDouble(value.toString());
-            }catch(Exception e){
-                throw new EnvironmentException("Cannot convert " + var_name + " to number");
-            }
-        }
-        else if(value instanceof Double){
-            return value;
-        }
-        else if(value instanceof Exp){
-            return evaluate((Exp) value);
-        }
-        throw new EnvironmentException("No match type for the variable " + var_name);
+//        String var_name = expr.name;//Get the name of the token
+//        Object value = envmnt.get(var_name);
+//        if(value instanceof String){
+//            try{
+//                return Double.parseDouble(value.toString());
+//            }catch(Exception e){
+//                throw new EnvironmentException("Cannot convert " + var_name + " to number");
+//            }
+//        }
+//        else if(value instanceof Double){
+//            return value;
+//        }
+//        else if(value instanceof Exp){
+//            return evaluate(value);
+//        }
+//        throw new EnvironmentException("No match type for the variable " + var_name);
+        return envmnt.get(expr.name) ;
     }
     /**
-     * Im not gonna use this
+     * File handling, just for not mixing numeric variables with strings
      */
     @Override
     public String visitFileExpr(Exp.FileNode expr){
@@ -241,30 +270,89 @@ public class Interpreter implements Exp.Visitor<Object>{
     public Object visitBinaryExpr(Exp.BinaryNode expr){
         Object left = evaluate(expr.left);
         Object right = evaluate(expr.right);
+        try{
         switch(expr.operator.getToken()){
-            case Token.PLUS:
+            case Token.PLUS:{
                 if (left instanceof Double && right instanceof Double) {
                     return (double)left + (double)right;
                 }
-            case Token.MINUS:
+                else if (left instanceof ArrayList<?> && right instanceof ArrayList<?>) {
+                    Iterator<Exp> l = ((ArrayList)left).iterator();
+                    Iterator<Exp> r = ((ArrayList)right).iterator();
+                    ArrayList<Double> results = new ArrayList<Double>();
+                    while(l.hasNext() && r.hasNext()){
+                        results.add((Double)evaluate(l.next()) + (Double)evaluate(r.next()));
+                    }
+                    return results;
+                }
+                else{break;}
+            }
+            case Token.MINUS:{
                 if (left instanceof Double && right instanceof Double) {
                     return (double)left - (double)right;
                 }
-            case Token.MULT:
+                else if (left instanceof ArrayList<?> && right instanceof ArrayList<?>) {
+                    Iterator<Exp> l = ((ArrayList)left).iterator();
+                    Iterator<Exp> r = ((ArrayList)right).iterator();
+                    ArrayList<Double> results = new ArrayList<Double>();
+                    while(l.hasNext() && r.hasNext()){
+                        results.add((Double)evaluate(l.next()) - (Double)evaluate(r.next()));
+                    }
+                    return results;
+                }
+                else{break;}
+            }
+            case Token.MULT:{
                 if (left instanceof Double && right instanceof Double) {
                     return (double)left * (double)right;
                 }
-            case Token.DIV:
+                else if (left instanceof ArrayList<?> && right instanceof ArrayList<?>) {
+                    Iterator<Exp> l = ((ArrayList)left).iterator();
+                    Iterator<Exp> r = ((ArrayList)right).iterator();
+                    ArrayList<Double> results = new ArrayList<Double>();
+                    while(l.hasNext() && r.hasNext()){
+                        results.add((Double)evaluate(l.next()) * (Double)evaluate(r.next()));
+                    }
+                    return results;
+                }
+                else{break;}
+            }
+            case Token.DIV:{
                 if (left instanceof Double && right instanceof Double) {
                     return (double)left / (double)right;
                 }
-            case Token.POW:
+                else if (left instanceof ArrayList<?> && right instanceof ArrayList<?>) {
+                    Iterator<Exp> l = ((ArrayList)left).iterator();
+                    Iterator<Exp> r = ((ArrayList)right).iterator();
+                    ArrayList<Double> results = new ArrayList<Double>();
+                    while(l.hasNext() && r.hasNext()){
+                        results.add((Double)evaluate(l.next()) / (Double)evaluate(r.next()));
+                    }
+                    return results;
+                }
+                else{break;}
+            }
+            case Token.POW:{
                 if (left instanceof Double && right instanceof Double) {
                     return Math.pow((Double)left, (Double)right);
                 }
+                else if (left instanceof ArrayList<?> && right instanceof ArrayList<?>) {
+                    Iterator<Exp> l = ((ArrayList)left).iterator();
+                    Iterator<Exp> r = ((ArrayList)right).iterator();
+                    ArrayList<Double> results = new ArrayList<Double>();
+                    while(l.hasNext() && r.hasNext()){
+                        results.add( Math.pow( (Double)evaluate(l.next()), (Double)evaluate(r.next())) );
+                    }
+                    return results;
+                }
+                else{break;}
+            }
             default:
                 throw new EnvironmentException("Not valid operation in " + left.toString() + " " + expr.operator.getValue() + " " + right.toString());
+        }}catch(Exception exc){//If something doesn't works throw this error
+            throw new EnvironmentException("Not valid operation in " + left.toString() + " " + expr.operator.getValue() + " " + right.toString());
         }
+        throw new EnvironmentException("Not valid operation in " + left.toString() + " " + expr.operator.getValue() + " " + right.toString());
     }
     /**
      * Evaluate an array node, simply return the List<Exp>
