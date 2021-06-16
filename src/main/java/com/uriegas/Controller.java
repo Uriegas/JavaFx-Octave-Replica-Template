@@ -97,7 +97,7 @@ public class Controller {
 
         ObservableList<Map.Entry<String, Object>> items = FXCollections.observableArrayList(table.entrySet());
         environment = new TableView<>(items);
-        environment.getColumns().setAll(names);
+        environment.getColumns().addAll(names, values);
 
         /**
          * Adds labels to folders and files, just their names 
@@ -150,7 +150,8 @@ public class Controller {
                     tabs.getSelectionModel().select(1);
                 }
                 else if(newValue != null && newValue.getValue().getPath().endsWith(".xlsx")){
-                    printToTerminal("\nHere you ought to load the file");
+                    cmdArea.appendText("\n");
+                    calcExec("read('" + newValue.getValue().getPath().toString() + "')");
                 }
         });
         /**
@@ -272,12 +273,7 @@ public class Controller {
                     stage.close();
                 }
                 else{//Parse the input
-                    try{
-                        printToTerminal(String.valueOf(calculator.calculate(input)));
-                        listCommands.add(input);
-                    }catch(Exception exception){
-                        printToTerminal(exception.getMessage());
-                    }
+                    calcExec(input);
                 }
                 //printToTerminal("You entered: " + input);
                     //Code with testing purposes
@@ -412,5 +408,18 @@ public class Controller {
         s.setTitle("Circle graph");
         s.setScene(new Scene(vb, 400, 400));
         s.show();
+    }
+    /**
+     * Executes the input, just for modularity
+     * @param in user input or clickable input
+     */
+    private void calcExec(String input){
+        try{
+            printToTerminal(String.valueOf(calculator.calculate(input)));
+            listCommands.add(input);
+            table = calculator.getEnvironment();
+        }catch(Exception exception){
+            printToTerminal(exception.getMessage());
+        }
     }
 }
