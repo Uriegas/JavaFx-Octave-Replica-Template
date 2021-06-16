@@ -160,7 +160,7 @@ public class Interpreter implements Exp.Visitor<Object>{
             @Override
             public Object call(Interpreter interpreter, ArrayList<Object> arguments){
                 if(arguments.get(0) instanceof Double && arguments.get(1) instanceof Double){
-                    Controller.plotGraph((Double)arguments.get(0), (Double)arguments.get(0));//Change to pass names of vars too
+                    Controller.plotCircle((Double)arguments.get(0), (Double)arguments.get(0));//Change to pass names of vars too
                     return "Graphing circle";
                 }
                 else if(arguments.get(0) instanceof ArrayList<?> && arguments.get(1) instanceof ArrayList<?>){
@@ -173,7 +173,41 @@ public class Interpreter implements Exp.Visitor<Object>{
                     while(it2.hasNext()){
                         result2 += (Double)evaluate(it2.next());
                     }
-                    Controller.plotGraph(result1, result2);
+                    Controller.plotCircle(result1, result2);
+                    return "Graphing circle";
+                }
+                else
+                    throw new EnvironmentException("Could not convert " + arguments.get(0).toString() + "to number");
+            }
+        });
+        /**
+         * Define scatter function
+         */
+        envmnt.define("scatter", new FuncCallable(){
+            @Override
+            public int arity(){return 2;}
+            @Override
+            public Object call(Interpreter interpreter, ArrayList<Object> arguments){
+                if(arguments.get(0) instanceof Double && arguments.get(1) instanceof Double){
+                    ArrayList<Double> x = new ArrayList<>();
+                    ArrayList<Double> y = new ArrayList<>();
+                    x.add(((Double)arguments.get(0)));
+                    y.add((Double)arguments.get(0));
+                    Controller.plotScatter(x,y);//Change to pass names of vars too
+                    return "Graphing scatter";
+                }
+                else if(arguments.get(0) instanceof ArrayList<?> && arguments.get(1) instanceof ArrayList<?>){
+                    Iterator<Exp> it = ((ArrayList)arguments.get(0)).iterator();
+                    Iterator<Exp> it2 = ((ArrayList)arguments.get(1)).iterator();
+                    ArrayList<Double> x = new ArrayList<>();
+                    ArrayList<Double> y = new ArrayList<>();
+                    while(it.hasNext()){
+                        x.add( (Double)evaluate(it.next()) );
+                    }
+                    while(it2.hasNext()){
+                        y.add( (Double)evaluate(it2.next()) );
+                    }
+                    Controller.plotScatter(x,y);//Change to pass names of vars too
                     return "Graphing circle";
                 }
                 else

@@ -16,13 +16,14 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-import javafx.application.Platform;
+import javafx.application.*;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
 import javafx.stage.*;
+
 /**
  * Controller of the view (fxml)
  */
@@ -389,7 +390,7 @@ public class Controller {
      * @param x
      * @param y
      */
-    static void plotGraph(Double x, Double y){
+    static void plotCircle(Double x, Double y){
         Text txt = new Text("Circle(x,y)");
         PieChart p = new PieChart();
 //        for(Float data : x)
@@ -405,6 +406,36 @@ public class Controller {
 
         Stage s = new Stage();
         s.setTitle("Circle graph");
+        s.setScene(new Scene(vb, 400, 400));
+        s.show();
+    }
+    /**
+     * Plot Scatter plot, points in 2D plain
+     * @param x
+     * @param y
+     */
+    static void plotScatter(ArrayList<Double> x, ArrayList<Double> y){
+        Text txt = new Text("Scatter(x,y)");
+        NumberAxis xAxis = new NumberAxis(0, 10, 1);
+        NumberAxis yAxis = new NumberAxis(-100, 500, 100);
+        ScatterChart<Number, Number> scatter = new ScatterChart<Number, Number>(xAxis, yAxis);
+        xAxis.setLabel("x");
+        yAxis.setLabel("y");
+        scatter.setTitle("Scatter(x,y)");
+
+        XYChart.Series series1 = new XYChart.Series();
+        series1.setName("Data");
+        for(int i = 0; i < x.size(); i++ )
+            series1.getData().add(new XYChart.Data(x.get(i), y.get(i)));
+      
+        scatter.getData().addAll(series1);
+
+        VBox vb = new VBox(txt, scatter);
+        vb.setAlignment(Pos.CENTER);
+        vb.setPadding(new Insets(10, 10, 10, 10));
+
+        Stage s = new Stage();
+        s.setTitle("Scatter graph");
         s.setScene(new Scene(vb, 400, 400));
         s.show();
     }
