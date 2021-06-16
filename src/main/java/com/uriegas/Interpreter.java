@@ -151,6 +151,35 @@ public class Interpreter implements Exp.Visitor<Object>{
                 return "Succesful file writin in " + arguments.get(1);
             }
         });
+        /**
+         * Define circle function
+         */
+        envmnt.define("circle", new FuncCallable(){
+            @Override
+            public int arity(){return 2;}
+            @Override
+            public Object call(Interpreter interpreter, ArrayList<Object> arguments){
+                if(arguments.get(0) instanceof Double && arguments.get(1) instanceof Double){
+                    Controller.plotGraph((Double)arguments.get(0), (Double)arguments.get(0));//Change to pass names of vars too
+                    return "Graphing circle";
+                }
+                else if(arguments.get(0) instanceof ArrayList<?> && arguments.get(1) instanceof ArrayList<?>){
+                    Iterator<Exp> it = ((ArrayList)arguments.get(0)).iterator();
+                    Iterator<Exp> it2 = ((ArrayList)arguments.get(1)).iterator();
+                    Double result1 = 0.0, result2 = 0.0;
+                    while(it.hasNext()){
+                        result1 += (Double)evaluate(it.next());
+                    }
+                    while(it2.hasNext()){
+                        result2 += (Double)evaluate(it2.next());
+                    }
+                    Controller.plotGraph(result1, result2);
+                    return "Graphing circle";
+                }
+                else
+                    throw new EnvironmentException("Could not convert " + arguments.get(0).toString() + "to number");
+            }
+        });
     }
     /**
      * Add the value and expression to the environment

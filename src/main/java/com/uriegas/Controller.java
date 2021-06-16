@@ -389,17 +389,16 @@ public class Controller {
      * @param x
      * @param y
      */
-    private void plotGraph(ArrayList<Float> x, ArrayList<Float> y){
+    static void plotGraph(Double x, Double y){
         Text txt = new Text("Circle(x,y)");
         PieChart p = new PieChart();
-        float xTotal=0, yTotal=0;
-        for(Float data : x)
-            xTotal += data;
-        for(Float data : y)
-            yTotal += data;
+//        for(Float data : x)
+//            xTotal += data;
+//        for(Float data : y)
+//            yTotal += data;
          
-        p.getData().add(new PieChart.Data("x", xTotal));
-        p.getData().add(new PieChart.Data("y", yTotal));
+        p.getData().add(new PieChart.Data("x", x));
+        p.getData().add(new PieChart.Data("y", y));
         VBox vb = new VBox(txt, p);
         vb.setAlignment(Pos.CENTER);
         vb.setPadding(new Insets(10, 10, 10, 10));
