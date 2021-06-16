@@ -14,6 +14,7 @@ public class TokenizerTest {
         Stack<String> input = new Stack<String>();
         //Adding multivariable expression to input stack
         input.add("2*x_1+15*x_2");
+        input.add("data = read('/run/media/uriegas/384f8cf3-55e7-459b-8b18-17bc09944115/home/uriegas/Documents/MyProjects/Programacion/LearningJava/unidad-2-actividad-1-Uriegas')");
         input.add("data = read('archivo1.xlsx')");
         input.add("f1 = 2x_1^2 - x_2");
         input.add("save(f1(data), 'output.txt')");

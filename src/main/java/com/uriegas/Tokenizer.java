@@ -30,6 +30,7 @@ public class Tokenizer {
         tknmeaning.add(new TknMeaning(Token.FUNC, "func"));
         tknmeaning.add(new TknMeaning(Token.NUMBER, "[0-9]+"));
         tknmeaning.add(new TknMeaning(Token.FILE, "(\\'\\w+\\.\\w+\\')"));//Allow points
+        tknmeaning.add(new TknMeaning(Token.FILE, "(\\'/[\\w~,;\\-\\./?%&+#=]*\\')"));//Allow points
         tknmeaning.add(new TknMeaning(Token.IDENTIFIER, "[a-zA-Z][a-zA-Z0-9_]*"));//Variable
         tknmeaning.add(new TknMeaning(Token.EQUALS, "\\="));
         //tknmeaning.add(new TknMeaning(Token.SAVE, "save"));//Special function (2 parameters)
