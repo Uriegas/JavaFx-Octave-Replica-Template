@@ -1,6 +1,8 @@
 package com.uriegas;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javafx.event.*;
 import javafx.fxml.FXML;
@@ -8,12 +10,15 @@ import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
@@ -44,13 +49,15 @@ public class Controller {
     private TreeView<File> files;
     @FXML
     private ListView<String> commandHistory;
+    @FXML
+    private TableView<Map.Entry<String, Object>> environment = new TableView<>();
     private ObservableList<String> listCommands;
     private String oldText;//Text prior user input
     private File currentScript;
     private String rootPath;
     final Clipboard clip = Clipboard.getSystemClipboard();
     final ClipboardContent content = new ClipboardContent();
-
+    private HashMap<String, Object> table;
 
     /**
      * Initializer to create the treeviewer
@@ -59,9 +66,39 @@ public class Controller {
      * executed after constructing everything
      */
     public void initialize(){
+        //Init of vars
         calculator = new Calculator();
+        table = calculator.getEnvironment();
         rootPath = System.getProperty("user.dir");
         setTreeDir(rootPath);
+        /**
+         * Environment implementation
+         */
+        TableColumn<Map.Entry<String,Object>,String> names = new TableColumn<>("Key");
+        TableColumn<Map.Entry<String,Object>,Object> values = new TableColumn<>("Values");
+        names.setCellValueFactory(new PropertyValueFactory<>("names"));
+//        names.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, Object>, String>, ObservableValue<String>>() {
+//
+//            @Override
+//            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, Object>, String> p) {
+//                // this callback returns property for just one cell, you can't use a loop here
+//                // for first column we use key
+//                return new SimpleStringProperty(p.getValue().getKey());
+//            }
+//        });
+        values.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, Object>, Object>, ObservableValue<Object>>() {
+
+            @Override
+            public ObservableValue<Object> call(TableColumn.CellDataFeatures<Map.Entry<String, Object>, Object> p) {
+                // for second column we use value
+                return new SimpleObjectProperty( p.getValue().getValue() ) ;
+            }
+        });
+
+        ObservableList<Map.Entry<String, Object>> items = FXCollections.observableArrayList(table.entrySet());
+        environment = new TableView<>(items);
+        environment.getColumns().setAll(names);
+
         /**
          * Adds labels to folders and files, just their names 
          * without full path. Ex: /usr/bin/archivo.xlsx -> archivo.xlsx

@@ -1,6 +1,7 @@
 package com.uriegas;
 
 import java.util.*;
+//import java.util.Map.Entry;
 
 /**
  * <h1>Calculator<h1/>
@@ -66,5 +67,11 @@ public class Calculator{
         }
         s.close();
         return 0;
+    }
+    /**
+     * Get the current environment aka loaded variables and functions
+     */
+    public HashMap<String,Object> getEnvironment(){
+        return evalVisit.envmnt.getMap();
     }
 }

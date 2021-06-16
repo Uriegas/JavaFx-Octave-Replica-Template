@@ -1,6 +1,7 @@
 package com.uriegas;
 
 import java.util.*;
+//import java.util.Map.Entry;
 
 /**
  * Here we store variables and functions
@@ -47,5 +48,11 @@ public class Environment {
      */
     public boolean equals(Environment e){
         return values.keySet().equals(e.values.keySet());
-}
+    }
+    /**
+     * Get all data
+     */
+    public HashMap<String,Object> getMap(){
+        return values;
+    }
 }
