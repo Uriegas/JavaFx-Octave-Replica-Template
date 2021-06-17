@@ -5,7 +5,6 @@
 *.txt
 *.trc
 *.phd
-target/
 .vscode/
 .settings/
 .project
